@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
+import org.bukkit.enchantments.Enchantment;
 
 /*
  * This is a sample event listener
@@ -35,7 +36,7 @@ public class SampleListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(this.plugin.getConfig().getString("sample.message"));
+//        event.getPlayer().sendMessage(this.plugin.getConfig().getString("sample.message"));
     }
 
     @EventHandler
@@ -47,20 +48,21 @@ public class SampleListener implements Listener {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemStack bow = new ItemStack(Material.BOW, 1);
         ItemStack arrow = new ItemStack(Material.ARROW, 64);
+        arrow.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
 
         ItemStack[] armor = new ItemStack[4];
 
-        armor[0] = new ItemStack(Material.DIAMOND_HELMET, 1);
-        armor[1] = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-        armor[2] = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
-        armor[3] = new ItemStack(Material.DIAMOND_BOOTS, 1);
+        armor[0] = new ItemStack(Material.DIAMOND_BOOTS, 1);
+        armor[1] = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
+        armor[2] = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
+        armor[3] = new ItemStack(Material.DIAMOND_HELMET, 1);
 
         inventory.setArmorContents(armor);
         inventory.addItem(sword);
         inventory.addItem(bow);
         inventory.addItem(arrow);
         
-        player.sendMessage(ChatColor.DARK_BLUE + "Have some gear, broestar.");
+//        player.sendMessage(ChatColor.DARK_BLUE + "Have some gear, broestar.");
     }
 
     /*
