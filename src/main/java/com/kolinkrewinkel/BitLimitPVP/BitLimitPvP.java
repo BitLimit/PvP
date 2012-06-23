@@ -12,10 +12,10 @@ public class BitLimitPvP extends JavaPlugin {
     @Override
     public void onEnable() {
         // Create the SampleListener
-        new SampleListener(this);
+        new BitLimitPvPListener(this);
         
         // set the command executor for sample
-        this.getCommand("BitLimitPvP").setExecutor(new SampleCommandExecutor(this));
+        this.getCommand("BitLimitPvP").setExecutor(new BitLimitPvPCommandExecutor(this));
     }
     
     /*
