@@ -46,9 +46,9 @@ public class BitLimitPvPListener implements Listener {
         PlayerInventory inventory = player.getInventory(); // The player's inventory
 
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
+        sword.addUnsafeEnchantment(Enchantment.KNOCKBACK, 10);
         ItemStack bow = new ItemStack(Material.BOW, 1);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-//        bow.addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
         ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
 
@@ -74,11 +74,11 @@ public class BitLimitPvPListener implements Listener {
      */
     @EventHandler
     public void onPlayerInteract(PlayerInteractEntityEvent event) {
-        final EntityType entityType = event.getRightClicked().getType();
-
-        event.getPlayer().sendMessage(MessageFormat.format(
-                "You interacted with a {0} it has an id of {1}",
-                entityType.getName(),
-                entityType.getTypeId()));
+//        final EntityType entityType = event.getRightClicked().getType();
+//
+//        event.getPlayer().sendMessage(MessageFormat.format(
+//                "You interacted with a {0} it has an id of {1}",
+//                entityType.getName(),
+//                entityType.getTypeId()));
     }
 }
