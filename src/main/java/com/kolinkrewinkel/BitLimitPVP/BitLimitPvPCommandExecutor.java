@@ -12,7 +12,7 @@ public class BitLimitPvPCommandExecutor implements CommandExecutor {
     /*
      * This command executor needs to know about its plugin from which it came from
      */
-    public SampleCommandExecutor(BitLimitPvP plugin) {
+    public BitLimitPvPCommandExecutor(BitLimitPvP plugin) {
         this.plugin = plugin;
     }
 

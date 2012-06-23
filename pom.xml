@@ -67,8 +67,8 @@
         <version>2.3.2</version>
         <configuration>
           <!-- Minimum Minecraft requirement -->
-          <source>1.2.5</source>
-          <target>1.2.5</target>
+          <source>1.5</source>
+          <target>1.5</target>
         </configuration>
       </plugin>
     </plugins>
