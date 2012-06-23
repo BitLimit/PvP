@@ -48,7 +48,7 @@ public class SampleListener implements Listener {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemStack bow = new ItemStack(Material.BOW, 1);
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
-        ItemStack food = new ItemStack(Material.STEAK, 8);
+        ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
 
         ItemStack[] armor = new ItemStack[4];
         armor[0] = new ItemStack(Material.DIAMOND_BOOTS, 1);
