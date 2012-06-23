@@ -47,13 +47,15 @@ public class SampleListener implements Listener {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemStack bow = new ItemStack(Material.BOW, 1);
         ItemStack arrow = new ItemStack(Material.ARROW, 64);
-        
-        ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET, 1);
-        ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-        ItemStack leggings = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
-        ItemStack boots = new ItemStack(Material.DIAMOND_BOOTS, 1);
 
-        inventory.setArmorContents([helmet, chestplate, leggings, boots]);
+        ItemStack[] armor = new ItemStack[4];
+
+        armor[0] = new ItemStack(Material.DIAMOND_HELMET, 1);
+        armor[1] = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
+        armor[2] = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
+        armor[3] = new ItemStack(Material.DIAMOND_BOOTS, 1);
+
+        inventory.setArmorContents(armor);
         inventory.addItem(sword);
         inventory.addItem(bow);
         inventory.addItem(arrow);
