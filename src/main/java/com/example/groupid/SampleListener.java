@@ -47,8 +47,11 @@ public class SampleListener implements Listener {
 
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemStack bow = new ItemStack(Material.BOW, 1);
+        
         ItemStack arrow = new ItemStack(Material.ARROW, 64);
         arrow.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
+        arrow.addUnsafeEnchantment(Enchantment.KNOCKBACK, 10);
+        arrow.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 5);
 
         ItemStack[] armor = new ItemStack[4];
 
