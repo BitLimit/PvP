@@ -15,7 +15,7 @@ public class BitLimitPvP extends JavaPlugin {
         new BitLimitPvPListener(this);
         
         // set the command executor for sample
-        this.getCommand("BitLimitPvP").setExecutor(new BitLimitPvPCommandExecutor(this));
+        this.getCommand("bitlimit").setExecutor(new BitLimitPvPCommandExecutor(this));
     }
     
     /*
