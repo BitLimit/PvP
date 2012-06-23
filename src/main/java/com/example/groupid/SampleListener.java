@@ -3,10 +3,16 @@ package com.example.groupid;
 import java.text.MessageFormat;
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.Material;
+import org.bukkit.ChatColor;
 
 /*
  * This is a sample event listener
@@ -31,7 +37,30 @@ public class SampleListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().sendMessage(this.plugin.getConfig().getString("sample.message"));
     }
-    
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+
+        Player player = event.getPlayer(); // The player who joined
+        PlayerInventory inventory = player.getInventory(); // The player's inventory
+
+        ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
+        ItemStack bow = new ItemStack(Material.BOW, 1);
+        ItemStack arrow = new ItemStack(Material.ARROW, 64);
+        
+        ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET, 1);
+        ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
+        ItemStack leggings = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
+        ItemStack boots = new ItemStack(Material.DIAMOND_BOOTS, 1);
+
+        inventory.setArmorContents([helmet, chestplate, leggings, boots]);
+        inventory.addItem(sword);
+        inventory.addItem(bow);
+        inventory.addItem(arrow);
+        
+        player.sendMessage(ChatColor.RED + "Have some gear, broestar.");
+    }
+
     /*
      * Another example of a event handler. This one will give you the name of
      * the entity you interact with, if it is a Creature it will give you the
