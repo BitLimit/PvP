@@ -58,7 +58,7 @@ public class SampleListener implements Listener {
         inventory.addItem(bow);
         inventory.addItem(arrow);
         
-        player.sendMessage(ChatColor.RED + "Have some gear, broestar.");
+        player.sendMessage(ChatColor.DARK_BLUE + "Have some gear, broestar.");
     }
 
     /*
