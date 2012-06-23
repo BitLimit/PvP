@@ -5,11 +5,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.example.groupid</groupId>
-  <artifactId>SampleBukkitPlugin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>SampleBukkitPlugin</name>
-  <description>This is a sample plugin for CraftBukkit</description>
+  <groupId>com.kolinkrewinkel.bitlimitpvp</groupId>
+  <artifactId>BitLimitPvP</artifactId>
+  <version>0.0.1</version>
+  <name>BitLimitPvP</name>
+  <description>PvP Manager for Coestar's BitLimit servers.'</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
