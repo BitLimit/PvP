@@ -1,13 +1,11 @@
-# This is a sample plugin.yml
-# For more infomration refer to http://wiki.bukkit.org/Plugin_YAML
-main: com.example.groupid.Sample
-name: SamplePlugin
+main: com.bitlimit.kolinkrewinkel.BitLimitPVP
+name: BitLimit PVP
 version: ${project.version}
-author: SampleAuthor
-description: This is a sample plugin
+author: Kolin Krewinkel
+description: BitLimit PVP Plugin
 commands:
   sample:
-    description: set the sample message
+    description: unimplemented
     usage: /<command> [message]
     permission: sample.message
 permissions:

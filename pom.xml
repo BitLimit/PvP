@@ -5,9 +5,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.kolinkrewinkel.bitlimitpvp</groupId>
+  <groupId>com.kolinkrewinkel.BitLimitPvP</groupId>
   <artifactId>BitLimitPvP</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.5</version>
   <name>BitLimitPvP</name>
   <description>PvP Manager for Coestar's BitLimit servers.'</description>
 
@@ -67,8 +67,8 @@
         <version>2.3.2</version>
         <configuration>
           <!-- Minimum Minecraft requirement -->
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.2.5</source>
+          <target>1.2.5</target>
         </configuration>
       </plugin>
     </plugins>
