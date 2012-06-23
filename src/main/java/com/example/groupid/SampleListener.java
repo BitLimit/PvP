@@ -19,7 +19,7 @@ import org.bukkit.enchantments.Enchantment;
  * This is a sample event listener
  */
 public class SampleListener implements Listener {
-    private final Sample plugin;
+    private final BitLimit PVP;
 
     /*
      * This listener needs to know about the plugin which it came from
@@ -47,23 +47,20 @@ public class SampleListener implements Listener {
 
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemStack bow = new ItemStack(Material.BOW, 1);
-        
-        ItemStack arrow = new ItemStack(Material.ARROW, 64);
-        arrow.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
-        arrow.addUnsafeEnchantment(Enchantment.KNOCKBACK, 10);
-        arrow.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 5);
+        ItemStack arrow = new ItemStack(Material.ARROW, 1);
+        ItemStack food = new ItemStack(Material.STEAK, 8);
 
         ItemStack[] armor = new ItemStack[4];
-
         armor[0] = new ItemStack(Material.DIAMOND_BOOTS, 1);
         armor[1] = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
         armor[2] = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
         armor[3] = new ItemStack(Material.DIAMOND_HELMET, 1);
-
         inventory.setArmorContents(armor);
+
         inventory.addItem(sword);
         inventory.addItem(bow);
         inventory.addItem(arrow);
+        inventory.addItem(food);
         
 //        player.sendMessage(ChatColor.DARK_BLUE + "Have some gear, broestar.");
     }
