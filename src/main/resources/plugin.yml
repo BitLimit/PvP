@@ -1,5 +1,5 @@
-main: com.bitlimit.kolinkrewinkel.BitLimitPVP
-name: BitLimit PVP
+main: com.kolinkrewinkel.BitLimitPvP.BitLimitPvP
+name: BitLimit PvP
 version: ${project.version}
 author: Kolin Krewinkel
 description: BitLimit PVP Plugin
@@ -10,7 +10,7 @@ commands:
     permission: sample.message
 permissions:
   sample.*:
-    description: gives all permissions of the SamplePlugin
+    description: gives all permissions of BitLimit PvP
     default: op
     children:
       sample.message:
