@@ -3,9 +3,11 @@ name: BitLimit PvP
 version: ${project.version}
 author: Kolin Krewinkel
 description: BitLimit PVP Plugin
+website: http://github.com/kolinkrewinkel/BitLimitPvP/
+softdepend: [WorldGuard]
 commands:
-  bitlimit:
-    description: unimplemented
+  map:
+    description: WIP - Controls Maps used by BitLimit PvP
     usage: /<command> [message]
     permission: sample.message
 permissions:
