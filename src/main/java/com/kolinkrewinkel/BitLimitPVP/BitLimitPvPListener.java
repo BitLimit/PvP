@@ -47,14 +47,15 @@ public class BitLimitPvPListener implements Listener {
 
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemStack bow = new ItemStack(Material.BOW, 1);
+        bow.addEnchantment(Enchantment.INFINITY, 1);
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
         ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
 
         ItemStack[] armor = new ItemStack[4];
-        armor[0] = new ItemStack(Material.DIAMOND_BOOTS, 1);
-        armor[1] = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
-        armor[2] = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-        armor[3] = new ItemStack(Material.DIAMOND_HELMET, 1);
+        armor[0] = new ItemStack(Material.LEATHER_BOOTS, 1);
+        armor[1] = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+        armor[2] = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+        armor[3] = new ItemStack(Material.LEATHER_HELMET, 1);
         inventory.setArmorContents(armor);
 
         inventory.addItem(sword);
