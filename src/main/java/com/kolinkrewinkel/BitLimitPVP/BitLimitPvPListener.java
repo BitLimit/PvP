@@ -81,7 +81,8 @@ public class BitLimitPvPListener implements Listener {
         RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
         ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
         ProtectedRegion region = set.iterator().next();
-        
+
+        event.setRespawnLocation(getRandomLocationInRegionWithPlayer(region, player));
 
 
         PlayerInventory inventory = player.getInventory(); // The player's inventory
@@ -148,7 +149,7 @@ public class BitLimitPvPListener implements Listener {
         // Adapted from RobertZenz/SpawnRandomizer
         int y = player.getWorld().getHighestBlockYAt(x, z);
 
-        Location randomLocation = Location(player.getWorld(), (double)x, (double)y, (double)z);
+        Location randomLocation = new Location(player.getWorld(), (double)x, (double)y, (double)z);
         return randomLocation;
     }
 
