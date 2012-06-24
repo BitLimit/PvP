@@ -72,7 +72,7 @@ public class BitLimitPvPListener implements Listener {
         Player player = event.getPlayer(); // Get player who respawned
         Location respawnLocation = event.getRespawnLocation();
 
-//        Respawn Location Randomization
+//      Respawn Location Randomization
         WorldGuardPlugin worldGuard = getWorldGuard(player);
         Vector pt = toVector(respawnLocation); // This also takes a location
         
@@ -86,7 +86,7 @@ public class BitLimitPvPListener implements Listener {
         }
         event.setRespawnLocation(getRandomLocationInRegionWithPlayer(region, player));
 
-
+//      Auto equipping
         PlayerInventory inventory = player.getInventory(); // The player's inventory
 
         ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
@@ -106,8 +106,6 @@ public class BitLimitPvPListener implements Listener {
         inventory.addItem(bow);
         inventory.addItem(arrow);
         inventory.addItem(food);
-        
-//        player.sendMessage(ChatColor.DARK_BLUE + "Have some gear, broestar.");
     }
 
     private WorldGuardPlugin getWorldGuard(Player player)
