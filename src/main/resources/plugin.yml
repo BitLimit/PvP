@@ -8,8 +8,10 @@ softdepend: [WorldGuard]
 commands:
   map:
     description: WIP - Controls Maps used by BitLimit PvP
-    usage: /<command> derp \n /<command> new
     permission: sample.message
+    usage: 
+	/<command> derp
+	/<command> new
   team:
     description: WIP - Team info used by BitLimit PvP
     usage: /<command> [message]
