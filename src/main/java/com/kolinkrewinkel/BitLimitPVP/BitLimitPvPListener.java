@@ -148,7 +148,7 @@ public class BitLimitPvPListener implements Listener {
         // Adapted from RobertZenz/SpawnRandomizer
         int y = player.getWorld().getHighestBlockYAt(x, z);
 
-        Location randomLocation = Location(player.getWorld(), x, y, z);
+        Location randomLocation = Location(player.getWorld(), (double)x, (double)y, (double)z);
         return randomLocation;
     }
 
