@@ -79,7 +79,7 @@ public class BitLimitPvPListener implements Listener {
         RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
         ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
         Iterator itr = set.iterator();
-        ProtectedRegion region;
+        ProtectedRegion region = null;
         while (itr.hasNext()) {
             region = (ProtectedRegion) itr.next();
         }
