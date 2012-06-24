@@ -84,7 +84,7 @@ public class BitLimitPvPListener implements Listener {
         while (itr.hasNext()) {
             region = (ProtectedRegion) itr.next();
         }
-        event.setRespawnLocation(getRandomLocationInRegionWithPlayer(region, player));
+        event.setRespawnLocation(getRandomLocationInRegionWithPlayerVerifyIntersection(region, player));
 
 //      Auto equipping
         PlayerInventory inventory = player.getInventory(); // The player's inventory
@@ -118,6 +118,14 @@ public class BitLimitPvPListener implements Listener {
         return (WorldGuardPlugin)plugin;
     }
 
+    private Location getRandomLocationInRegionWithPlayerVerifyIntersection(ProtectedRegion region, Player player)
+    {
+        Location randomLocation = getRandomLocationInRegionWithPlayer(region, player);
+        while (!region.contains(randomLocation)) {
+            randomLocation = getRandomLocationInRegionWithPlayer(region, player);
+        }
+    }
+
     private Location getRandomLocationInRegionWithPlayer(ProtectedRegion region, Player player)
     {
         Vector minPoint = region.getMinimumPoint();
@@ -134,6 +142,7 @@ public class BitLimitPvPListener implements Listener {
         int y = player.getWorld().getHighestBlockYAt(x, z);
 
         Location randomLocation = new Location(player.getWorld(), (double)x, (double)y, (double)z);
+        
         return randomLocation;
     }
 
