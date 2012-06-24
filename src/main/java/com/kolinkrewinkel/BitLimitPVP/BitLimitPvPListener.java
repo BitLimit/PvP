@@ -136,7 +136,20 @@ public class BitLimitPvPListener implements Listener {
         ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
         ProtectedRegion region = set.get(0);
 
-        Location randomLocation = Location();
+        Vector minPoint = region.getMinimumPoint();
+        Vector maxPoint = region.getMaximumPoint();
+
+        int diffX = Math.abs(maxPoint.getX() - minPoint.getX() + 1);
+		int diffZ = Math.abs(maxPoint.getZ() - minPoint.getZ() + 1);
+
+        int x = rand.nextInt(diffX) + minPoint.getX());
+		int z = rand.nextInt(diffZ) + minPoint.getZ());
+
+
+        // Adapted from RobertZenz/SpawnRandomizer
+        int y = player.getWorld().getHighestBlockYAt(x, z);
+
+        Location randomLocation = Location(player.getWorld(), x, y, z);
         return randomLocation;
     }
 
