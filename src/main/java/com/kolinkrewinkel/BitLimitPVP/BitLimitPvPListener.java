@@ -1,9 +1,7 @@
 package com.kolinkrewinkel.BitLimitPvP;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*; 
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -83,7 +81,7 @@ public class BitLimitPvPListener implements Listener {
         Iterator itr = set.iterator();
         ProtectedRegion region;
         while (itr.hasNext()) {
-            region = itr.next();
+            region = (ProtectedRegion) itr.next();
         }
 
         event.setRespawnLocation(getRandomLocationInRegionWithPlayer(region, player));
