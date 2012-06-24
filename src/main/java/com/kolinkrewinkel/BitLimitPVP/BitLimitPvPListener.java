@@ -108,6 +108,11 @@ public class BitLimitPvPListener implements Listener {
         inventory.addItem(food);
     }
 
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        event.getDrops().clear(); // Remove drops.
+    }
+
     private WorldGuardPlugin getWorldGuard(Player player)
     {
         Plugin plugin = player.getServer().getPluginManager().getPlugin("WorldGuard");
