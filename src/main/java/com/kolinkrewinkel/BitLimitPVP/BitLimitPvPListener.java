@@ -133,7 +133,7 @@ public class BitLimitPvPListener implements Listener {
         return (WorldGuardPlugin)plugin;
     }
 
-    private Location getRandomLocationInRegion(ProtectedRegion region)
+    private Location getRandomLocationInRegionWithPlayer(ProtectedRegion region, Player player)
     {
         Vector minPoint = region.getMinimumPoint();
         Vector maxPoint = region.getMaximumPoint();
@@ -141,12 +141,12 @@ public class BitLimitPvPListener implements Listener {
         int diffX = Math.abs((int)maxPoint.getX() - (int)minPoint.getX() + 1);
 		int diffZ = Math.abs((int)maxPoint.getZ() - (int)minPoint.getZ() + 1);
 
-        double x = rand.nextInt(diffX) + minPoint.getX();
-		double z = rand.nextInt(diffZ) + minPoint.getZ();
+        int x = rand.nextInt(diffX) + (int)minPoint.getX();
+		int z = rand.nextInt(diffZ) + (int)minPoint.getZ();
 
 
         // Adapted from RobertZenz/SpawnRandomizer
-        double y = player.getWorld().getHighestBlockYAt(x, z);
+        int y = player.getWorld().getHighestBlockYAt(x, z);
 
         Location randomLocation = Location(player.getWorld(), x, y, z);
         return randomLocation;
