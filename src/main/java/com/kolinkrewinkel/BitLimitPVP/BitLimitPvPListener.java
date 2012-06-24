@@ -127,21 +127,6 @@ public class BitLimitPvPListener implements Listener {
         }
     }
     
-    @EventHandler
-    public void onEntityDamage(EntityDamageEvent event){
-        if(event.isCancelled() || !(event.getEntity().isDead()))
-            return;
-        
-        Player player = null;
-        if(event.getEntity instanceof Player) {
-            player = (Player)event.getEntity();
-        }
-        
-        if(event.getCause().equals(DamageCause.LAVA) && p.isDead()){
-            //code you want
-        }
-    }
-    
     
     private WorldGuardPlugin getWorldGuard(Player player)
     {
