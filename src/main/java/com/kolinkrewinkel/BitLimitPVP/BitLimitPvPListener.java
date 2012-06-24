@@ -71,18 +71,19 @@ public class BitLimitPvPListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer(); // Get player who respawned
         Location respawnLocation = event.getRespawnLocation();
-        
+
+//        Respawn Location Randomization
         WorldGuardPlugin worldGuard = getWorldGuard(player);
         Vector pt = toVector(respawnLocation); // This also takes a location
         
         RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
         ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
+
         Iterator itr = set.iterator();
         ProtectedRegion region = null;
         while (itr.hasNext()) {
             region = (ProtectedRegion) itr.next();
         }
-
         event.setRespawnLocation(getRandomLocationInRegionWithPlayer(region, player));
 
 
@@ -108,22 +109,6 @@ public class BitLimitPvPListener implements Listener {
         
 //        player.sendMessage(ChatColor.DARK_BLUE + "Have some gear, broestar.");
     }
-
-    /*
-     * Another example of a event handler. This one will give you the name of
-     * the entity you interact with, if it is a Creature it will give you the
-     * creature Id.
-     */
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEntityEvent event) {
-//        final EntityType entityType = event.getRightClicked().getType();
-//
-//        event.getPlayer().sendMessage(MessageFormat.format(
-//                "You interacted with a {0} it has an id of {1}",
-//                entityType.getName(),
-//                entityType.getTypeId()));
-    }
-
 
     private WorldGuardPlugin getWorldGuard(Player player)
     {
