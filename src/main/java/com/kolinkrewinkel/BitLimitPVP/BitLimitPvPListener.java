@@ -122,6 +122,7 @@ public class BitLimitPvPListener implements Listener {
         if (attacker.getEntity() instanceof Player) {
             // Get offensive player
             Player attackerPlayer = (Player)attacker.getEntity();
+            attackerPlayer.sendMessage('You killed someone.');
             // Increment level by one.
             attackerPlayer.setLevel(attackerPlayer.getLevel() + 1);
         }
