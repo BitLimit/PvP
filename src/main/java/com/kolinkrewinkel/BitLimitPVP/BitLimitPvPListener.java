@@ -113,14 +113,13 @@ public class BitLimitPvPListener implements Listener {
         event.getDrops().clear(); // Remove drops.
         
         // Death causer
-        Player player = (Player)e.getEntity();
+        Player player = (Player)event.getEntity();
         
         // Get last damage infliction
         EntityDamageEvent attacker = player.getLastDamageCause();
         
         // Determine if isPlayer
-        if(attacker.getEntity() instanceof Player)
-        {
+        if (attacker.getEntity() instanceof Player) {
             // Get offensive player
             Player attackerPlayer = (Player)attacker.getEntity();
             // Increment level by one.
@@ -134,7 +133,7 @@ public class BitLimitPvPListener implements Listener {
             return;
         
         Player player = null;
-        if(event.getEntity instanceof Player){
+        if(event.getEntity instanceof Player) {
             player = (Player)event.getEntity();
         }
         
