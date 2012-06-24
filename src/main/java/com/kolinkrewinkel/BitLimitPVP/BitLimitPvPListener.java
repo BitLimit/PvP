@@ -3,13 +3,13 @@ package com.kolinkrewinkel.BitLimitPvP;
 import java.text.MessageFormat;
 import java.util.*; 
 
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
+
 
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.Material;
@@ -17,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -111,62 +112,78 @@ public class BitLimitPvPListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         event.getDrops().clear(); // Remove drops.
+        event.setDroppedExp(0);
         
-        // Death causer
-        Player player = (Player)event.getEntity();
-        
-        // Get last damage infliction
-        EntityDamageEvent attacker = player.getLastDamageCause();
-        
-        // Determine if isPlayer
-        if (attacker.getEntity() instanceof Player) {
-            // Get offensive player
-            Player attackerPlayer = (Player)attacker.getEntity();
-            attackerPlayer.sendMessage('You killed someone.');
-            // Increment level by one.
-            attackerPlayer.setLevel(attackerPlayer.getLevel() + 1);
+        Player deadPlayer = event.getEntity();
+        if (deadPlayer.getKiller() instanceof Player) {
+            Player killer = deadPlayer.getKiller();
+
+            int oldLevel = killer.getLevel();
+            killer.setLevel(oldLevel + 1);
         }
     }
     
-    
+//    @EventHandler
+//    public void onEntityDamage(EntityDamageEvent e) {
+//        if (e.getCause() == DamageCause.ENTITY_ATTACK || e.getCause() == DamageCause.PROJECTILE) {
+//            EntityDamageByEntityEvent event = (EntityDamageByEntityEvent)e;
+//            Entity damager = event.getDamager();
+//            Entity damagee = event.getEntity();
+//            
+//            if (damager instanceof Player && damagee instanceof Player) {
+//                Player attacker = (Player)damager;
+//                Player defender = (Player)damagee;
+//                Player killer = defender.getKiller();
+//                
+//                if (defender.isDead() || defender.getHealth() <= 0) {
+//                    defender.sendMessage("You were killed.");
+//                    int oldLevel = attacker.getLevel();
+//                    attacker.setLevel(oldLevel + 1);
+//                    attacker.sendMessage("Killed someone.");
+//                }
+//                
+//            }
+//        }
+//
+//    }
+
     private WorldGuardPlugin getWorldGuard(Player player)
     {
-        Plugin plugin = player.getServer().getPluginManager().getPlugin("WorldGuard");
-        if ((plugin == null) || (!(plugin instanceof WorldGuardPlugin))) {
-            return null; //throws a NullPointerException, telling the Admin that WG is not loaded.
-        }
-        
-        return (WorldGuardPlugin)plugin;
+    Plugin plugin = player.getServer().getPluginManager().getPlugin("WorldGuard");
+    if ((plugin == null) || (!(plugin instanceof WorldGuardPlugin))) {
+        return null; //throws a NullPointerException, telling the Admin that WG is not loaded.
     }
-    
+
+    return (WorldGuardPlugin)plugin;
+    }
+
     private Location getRandomLocationInRegionWithPlayerVerifyIntersection(ProtectedRegion region, Player player)
     {
-        Location randomLocation = getRandomLocationInRegionWithPlayer(region, player);
-        while (!region.contains(toVector(randomLocation))) {
-            randomLocation = getRandomLocationInRegionWithPlayer(region, player);
-        }
-        
-        return randomLocation;
+    Location randomLocation = getRandomLocationInRegionWithPlayer(region, player);
+    while (!region.contains(toVector(randomLocation))) {
+        randomLocation = getRandomLocationInRegionWithPlayer(region, player);
     }
-    
+
+    return randomLocation;
+    }
+
     private Location getRandomLocationInRegionWithPlayer(ProtectedRegion region, Player player)
     {
-        Vector minPoint = region.getMinimumPoint();
-        Vector maxPoint = region.getMaximumPoint();
-        
-        int diffX = Math.abs((int)maxPoint.getX() - (int)minPoint.getX() + 1);
-		int diffZ = Math.abs((int)maxPoint.getZ() - (int)minPoint.getZ() + 1);
-        
-        int x = rand.nextInt(diffX) + (int)minPoint.getX();
-		int z = rand.nextInt(diffZ) + (int)minPoint.getZ();
-        
-        
-        // Adapted from RobertZenz/SpawnRandomizer
-        int y = player.getWorld().getHighestBlockYAt(x, z);
-        
-        Location randomLocation = new Location(player.getWorld(), (double)x, (double)y, (double)z);
-        
-        return randomLocation;
+    Vector minPoint = region.getMinimumPoint();
+    Vector maxPoint = region.getMaximumPoint();
+
+    int diffX = Math.abs((int)maxPoint.getX() - (int)minPoint.getX() + 1);
+    int diffZ = Math.abs((int)maxPoint.getZ() - (int)minPoint.getZ() + 1);
+
+    int x = rand.nextInt(diffX) + (int)minPoint.getX();
+    int z = rand.nextInt(diffZ) + (int)minPoint.getZ();
+
+
+    // Adapted from RobertZenz/SpawnRandomizer
+    int y = player.getWorld().getHighestBlockYAt(x, z);
+
+    Location randomLocation = new Location(player.getWorld(), (double)x, (double)y, (double)z);
+
+    return randomLocation;
     }
-    
 }
