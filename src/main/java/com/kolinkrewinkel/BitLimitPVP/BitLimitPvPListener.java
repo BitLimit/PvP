@@ -121,7 +121,7 @@ public class BitLimitPvPListener implements Listener {
     private Location getRandomLocationInRegionWithPlayerVerifyIntersection(ProtectedRegion region, Player player)
     {
         Location randomLocation = getRandomLocationInRegionWithPlayer(region, player);
-        while (!region.contains(randomLocation)) {
+        while (!region.contains(toVector(randomLocation))) {
             randomLocation = getRandomLocationInRegionWithPlayer(region, player);
         }
     }
