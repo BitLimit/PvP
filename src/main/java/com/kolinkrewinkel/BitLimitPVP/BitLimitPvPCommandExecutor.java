@@ -20,7 +20,7 @@ public class BitLimitPvPCommandExecutor implements CommandExecutor {
      * On command set the sample message
      */
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender.hasPermission("BitLimitPvP.message") && args.length > 0) {
+        if (sender.hasPermission("BitLimitPvP") && args.length > 0) {
             this.plugin.getConfig().set("BitLimitPvP.message", Joiner.on(' ').join(args));
             return true;
         } else {

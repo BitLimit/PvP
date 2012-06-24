@@ -9,9 +9,10 @@ commands:
   map:
     description: WIP - Controls Maps used by BitLimit PvP
     permission: sample.message
-    usage: 
-	/<command> derp
-	/<command> new
+    usage: |
+      /<command> info.
+      /<command> region.
+      /<command> idk.
   team:
     description: WIP - Team info used by BitLimit PvP
     usage: /<command> [message]
