@@ -73,8 +73,7 @@ public class BitLimitPvPListener implements Listener {
         Location respawnLocation = event.getRespawnLocation();
         
         WorldGuardPlugin worldGuard = getWorldGuard(player);
-        Vector pt = toVector(player.getLocation()); // This also takes a location
-        LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
+        Vector pt = toVector(respawnLocation); // This also takes a location
         
         RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
         ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
