@@ -1,20 +1,14 @@
 package com.kolinkrewinkel.BitLimitPvP;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
-/*
- * This is the main class of the sample plug-in
- */
 public class BitLimitPvP extends JavaPlugin {
-    /*
-     * This is called when your plug-in is enabled
-     */
+
     @Override
     public void onEnable() {
-        // Create the SampleListener
         new BitLimitPvPListener(this);
-        
-        // set the command executor for sample
+
         this.getCommand("map").setExecutor(new MapCommandExecutor(this));
     }
     
@@ -28,3 +22,4 @@ public class BitLimitPvP extends JavaPlugin {
         this.saveConfig();
     }
 }
+
