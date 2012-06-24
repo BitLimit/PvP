@@ -1,15 +1,16 @@
 package com.kolinkrewinkel.BitLimitPvP;
 
+import java.util.*; 
+import com.google.common.base.Joiner;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.World;
-
-import com.google.common.base.Joiner;
 import org.bukkit.plugin.Plugin;
-import com.sk89q.worldedit.Vector;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -43,8 +44,10 @@ public class MapCommandExecutor implements CommandExecutor {
                 
                 RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
                 ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
-                while (set.iterator().hasNext()) {
-                    ProtectedRegion region = set.iterator().next();
+
+                Iterator itr = set.iterator();
+                while (itr.hasNext()) {
+                    ProtectedRegion region = (ProtectedRegion)itr.next();
                     sender.sendMessage(region.getId());
                 }
             }
