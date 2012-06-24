@@ -1,6 +1,9 @@
 package com.kolinkrewinkel.BitLimitPvP;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.Material;
+import org.bukkit.Location;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.enchantments.Enchantment;
@@ -24,15 +28,10 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 
-/*
- * This is a sample event listener
- */
 public class BitLimitPvPListener implements Listener {
-    private final BitLimitPvP plugin;
+    private final BitLimitPvP plugin; // Reference main plugin
+	private Random rand = new Random(System.nanoTime()); // Random respawn controller
 
-    /*
-     * This listener needs to know about the plugin which it came from
-     */
     public BitLimitPvPListener(BitLimitPvP plugin) {
         // Register the listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -73,7 +72,15 @@ public class BitLimitPvPListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer(); // Get player who respawned
-        Location respawnLocation = player.getRespawnLocation();
+        Location respawnLocation = event.getRespawnLocation();
+        
+        WorldGuardPlugin worldGuard = getWorldGuard(player);
+        Vector pt = toVector(player.getLocation()); // This also takes a location
+        LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
+        
+        RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
+        ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
+        ProtectedRegion region = set.iterator().next();
         
 
 
@@ -116,9 +123,9 @@ public class BitLimitPvPListener implements Listener {
     }
 
 
-    private WorldGuardPlugin getWorldGuard(CommandSender sender)
+    private WorldGuardPlugin getWorldGuard(Player player)
     {
-        Plugin plugin = sender.getServer().getPluginManager().getPlugin("WorldGuard");
+        Plugin plugin = player.getServer().getPluginManager().getPlugin("WorldGuard");
         if ((plugin == null) || (!(plugin instanceof WorldGuardPlugin))) {
             return null; //throws a NullPointerException, telling the Admin that WG is not loaded.
         }
@@ -128,26 +135,18 @@ public class BitLimitPvPListener implements Listener {
 
     private Location getRandomLocationInRegion(ProtectedRegion region)
     {
-        WorldGuardPlugin worldGuard = getWorldGuard(sender);
-        Vector pt = toVector(player.getLocation()); // This also takes a location
-        LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
-        
-        RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
-        ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
-        ProtectedRegion region = set.get(0);
-
         Vector minPoint = region.getMinimumPoint();
         Vector maxPoint = region.getMaximumPoint();
 
-        int diffX = Math.abs(maxPoint.getX() - minPoint.getX() + 1);
-		int diffZ = Math.abs(maxPoint.getZ() - minPoint.getZ() + 1);
+        double diffX = Math.abs(maxPoint.getX() - minPoint.getX() + 1);
+		double diffZ = Math.abs(maxPoint.getZ() - minPoint.getZ() + 1);
 
-        int x = rand.nextInt(diffX) + minPoint.getX());
-		int z = rand.nextInt(diffZ) + minPoint.getZ());
+        double x = rand.nextInt(diffX) + minPoint.getX();
+		double z = rand.nextInt(diffZ) + minPoint.getZ();
 
 
         // Adapted from RobertZenz/SpawnRandomizer
-        int y = player.getWorld().getHighestBlockYAt(x, z);
+        double y = player.getWorld().getHighestBlockYAt(x, z);
 
         Location randomLocation = Location(player.getWorld(), x, y, z);
         return randomLocation;
