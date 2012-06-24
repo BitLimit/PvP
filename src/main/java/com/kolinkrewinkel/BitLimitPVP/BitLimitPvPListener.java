@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
+
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.Material;
 import org.bukkit.Location;
