@@ -36,7 +36,29 @@ public class BitLimitPvPListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-//        event.getPlayer().sendMessage(this.plugin.getConfig().getString("sample.message"));
+        Player player = event.getPlayer(); // The player who joined
+        PlayerInventory inventory = player.getInventory(); // The player's inventory
+
+        ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
+        ItemStack bow = new ItemStack(Material.BOW, 1);
+        bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
+
+        if (!inventory.contains(sword) && !inventory.contains(bow)) {
+            ItemStack arrow = new ItemStack(Material.ARROW, 1);
+            ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
+            
+            ItemStack[] armor = new ItemStack[4];
+            armor[0] = new ItemStack(Material.LEATHER_BOOTS, 1);
+            armor[1] = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+            armor[2] = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+            armor[3] = new ItemStack(Material.LEATHER_HELMET, 1);
+            inventory.setArmorContents(armor);
+            
+            inventory.addItem(sword);
+            inventory.addItem(bow);
+            inventory.addItem(arrow);
+            inventory.addItem(food);
+        }
     }
 
     @EventHandler
@@ -45,8 +67,7 @@ public class BitLimitPvPListener implements Listener {
         Player player = event.getPlayer(); // The player who joined
         PlayerInventory inventory = player.getInventory(); // The player's inventory
 
-        ItemStack sword = new ItemStack(Material.DIAMOND_SWORD, 1);
-        sword.addUnsafeEnchantment(Enchantment.KNOCKBACK, 10);
+        ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
         ItemStack bow = new ItemStack(Material.BOW, 1);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
