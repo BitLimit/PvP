@@ -13,7 +13,16 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.enchantments.Enchantment;
+
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 
 /*
  * This is a sample event listener
@@ -63,8 +72,11 @@ public class BitLimitPvPListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer(); // Get player who respawned
+        Location respawnLocation = player.getRespawnLocation();
+        
 
-        Player player = event.getPlayer(); // The player who joined
+
         PlayerInventory inventory = player.getInventory(); // The player's inventory
 
         ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
@@ -102,4 +114,30 @@ public class BitLimitPvPListener implements Listener {
 //                entityType.getName(),
 //                entityType.getTypeId()));
     }
+
+
+    private WorldGuardPlugin getWorldGuard(CommandSender sender)
+    {
+        Plugin plugin = sender.getServer().getPluginManager().getPlugin("WorldGuard");
+        if ((plugin == null) || (!(plugin instanceof WorldGuardPlugin))) {
+            return null; //throws a NullPointerException, telling the Admin that WG is not loaded.
+        }
+        
+        return (WorldGuardPlugin)plugin;
+    }
+
+    private Location getRandomLocationInRegion(ProtectedRegion region)
+    {
+        WorldGuardPlugin worldGuard = getWorldGuard(sender);
+        Vector pt = toVector(player.getLocation()); // This also takes a location
+        LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
+        
+        RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
+        ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
+        ProtectedRegion region = set.get(0);
+
+        Location randomLocation = Location();
+        return randomLocation;
+    }
+
 }
