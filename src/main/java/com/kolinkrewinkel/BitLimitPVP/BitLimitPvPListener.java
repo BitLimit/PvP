@@ -138,8 +138,8 @@ public class BitLimitPvPListener implements Listener {
         Vector minPoint = region.getMinimumPoint();
         Vector maxPoint = region.getMaximumPoint();
 
-        double diffX = Math.abs(maxPoint.getX() - minPoint.getX() + 1);
-		double diffZ = Math.abs(maxPoint.getZ() - minPoint.getZ() + 1);
+        int diffX = Math.abs((int)maxPoint.getX() - (int)minPoint.getX() + 1);
+		int diffZ = Math.abs((int)maxPoint.getZ() - (int)minPoint.getZ() + 1);
 
         double x = rand.nextInt(diffX) + minPoint.getX();
 		double z = rand.nextInt(diffZ) + minPoint.getZ();
