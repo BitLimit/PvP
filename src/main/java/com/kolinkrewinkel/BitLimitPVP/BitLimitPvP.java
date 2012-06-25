@@ -10,6 +10,7 @@ public class BitLimitPvP extends JavaPlugin {
         new BitLimitPvPListener(this);
 
         this.getCommand("map").setExecutor(new MapCommandExecutor(this));
+        this.getCommand("immunity").setExecutor(new MapCommandExecutor(this));
     }
     
     /*

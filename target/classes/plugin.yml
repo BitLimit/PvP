@@ -21,7 +21,14 @@ commands:
     description: WIP - Match info used by BitLimit PvP
     usage: /<command> [message]
     permission: sample.message
-    
+  immunity:
+    description: Grants immunity to provided player
+    usage: /<command> player
+  admin:
+    description: WIP - Match info used by BitLimit PvP
+    usage: /<command> [message]
+    permission: sample.message
+
 permissions:
   bitlimit.*:
     description: gives all permissions of BitLimit PvP
