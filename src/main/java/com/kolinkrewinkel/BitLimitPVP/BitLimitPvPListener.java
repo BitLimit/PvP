@@ -91,8 +91,10 @@ public class BitLimitPvPListener implements Listener {
         PlayerInventory inventory = player.getInventory(); // The player's inventory
         
         ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
+        sword.addEnchantment(Enchantment.UNBREAKING, 10);
         ItemStack bow = new ItemStack(Material.BOW, 1);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
+        bow.addEnchantment(Enchantment.UNBREAKING, 10);
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
         ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
         
@@ -101,6 +103,7 @@ public class BitLimitPvPListener implements Listener {
         armor[1] = new ItemStack(Material.LEATHER_LEGGINGS, 1);
         armor[2] = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
         armor[3] = new ItemStack(Material.LEATHER_HELMET, 1);
+        armor.addEnchantment(Enchantment.UNBREAKING, 10);
         inventory.setArmorContents(armor);
         
         inventory.addItem(sword);
