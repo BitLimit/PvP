@@ -22,14 +22,14 @@ import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 
 public class ImmunityCommandExecutor implements CommandExecutor {
     private final BitLimitPvP plugin;
-
+    
     public ImmunityCommandExecutor(BitLimitPvP plugin) {
         this.plugin = plugin;
     }
-
+    
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         sender.sendMessage(args);
-    
+        
         if (sender instanceof Player || sender instanceof ConsoleCommandSender) {
             Player player = (Player)sender;
             String name = player.getPlayerListName();
@@ -38,13 +38,13 @@ public class ImmunityCommandExecutor implements CommandExecutor {
             String loserific = new String("Loserific");
             
             if (name.equals(kolin) || name.equals(coestar) || name.equals(loserific)) {
-
+                
                 if (args.length == 0) {
-
+                    
                     List metadataValues = player.getMetadata("vanished");
                     MetadataValue value = (MetadataValue)metadataValues.get(1);
                     boolean vanished = value.asBoolean();
-
+                    
                     if (vanished) {
                         FixedMetadataValue newValue = new FixedMetadataValue(plugin, false);
                         player.setMetadata("vanished", newValue);
@@ -54,13 +54,23 @@ public class ImmunityCommandExecutor implements CommandExecutor {
                         player.setMetadata("vanished", newValue);
                         sender.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
                     }
-
-
+                    
+                    
                     return true;
                 } else if (args.length == 1) {
-                    String name = args[0];
-                    Player targetPlayer = Bukkit.getServer().getPlayer(name);
+                    String targetPlayerName = args[0];
+                    Player targetPlayer = Bukkit.getServer().getPlayer(targetPlayerName);
 
+                    if (targetPlayer.hasMetadata("vanished")) {
+                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, true);
+                        targetPlayer.setMetadata("vanished", newValue);
+                        targetPlayer.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
+                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to immune mode.");
+
+
+                        return true;
+                    }
+                    
                     List metadataValues = targetPlayer.getMetadata("vanished");
                     MetadataValue value = (MetadataValue)metadataValues.get(1);
                     boolean vanished = value.asBoolean();
@@ -74,13 +84,14 @@ public class ImmunityCommandExecutor implements CommandExecutor {
                         FixedMetadataValue newValue = new FixedMetadataValue(plugin, true);
                         targetPlayer.setMetadata("vanished", newValue);
                         targetPlayer.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
-                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to immune mode.");
-
+                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to immune mode.");                        
                     }
                 }
             }
-
-                
+            
+            
+        }
         return false;
     }
 }
+
