@@ -46,11 +46,11 @@ public class ImmunityCommandExecutor implements CommandExecutor {
                     boolean vanished = value.asBoolean();
                     
                     if (vanished) {
-                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, false);
+                        FixedMetadataValue newValue = new FixedMetadataValue(Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket"), false);
                         player.setMetadata("vanished", newValue);
                         sender.sendMessage(ChatColor.RED + "Returned to regular state.");
                     } else {
-                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, true);
+                        FixedMetadataValue newValue = new FixedMetadataValue(Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket"), true);
                         player.setMetadata("vanished", newValue);
                         sender.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
                     }
@@ -58,34 +58,34 @@ public class ImmunityCommandExecutor implements CommandExecutor {
                     
                     return true;
                 } else if (args.length == 1) {
-                    String targetPlayerName = args[0];
-                    Player targetPlayer = Bukkit.getServer().getPlayer(targetPlayerName);
-
-                    if (targetPlayer.hasMetadata("vanished")) {
-                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, true);
-                        targetPlayer.setMetadata("vanished", newValue);
-                        targetPlayer.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
-                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to immune mode.");
-
-
-                        return true;
-                    }
-                    
-                    List metadataValues = targetPlayer.getMetadata("vanished");
-                    MetadataValue value = (MetadataValue)metadataValues.get(1);
-                    boolean vanished = value.asBoolean();
-                    
-                    if (vanished) {
-                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, false);
-                        targetPlayer.setMetadata("vanished", newValue);
-                        targetPlayer.sendMessage(ChatColor.RED + "Returned to regular state.");
-                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to regular state.");
-                    } else {
-                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, true);
-                        targetPlayer.setMetadata("vanished", newValue);
-                        targetPlayer.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
-                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to immune mode.");                        
-                    }
+//                    String targetPlayerName = args[0];
+//                    Player targetPlayer = Bukkit.getServer().getPlayer(targetPlayerName);
+//
+//                    if (targetPlayer.hasMetadata("vanished")) {
+//                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, true);
+//                        targetPlayer.setMetadata("vanished", newValue);
+//                        targetPlayer.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
+//                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to immune mode.");
+//
+//
+//                        return true;
+//                    }
+//                    
+//                    List metadataValues = targetPlayer.getMetadata("vanished");
+//                    MetadataValue value = (MetadataValue)metadataValues.get(1);
+//                    boolean vanished = value.asBoolean();
+//                    
+//                    if (vanished) {
+//                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, false);
+//                        targetPlayer.setMetadata("vanished", newValue);
+//                        targetPlayer.sendMessage(ChatColor.RED + "Returned to regular state.");
+//                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to regular state.");
+//                    } else {
+//                        FixedMetadataValue newValue = new FixedMetadataValue(plugin, true);
+//                        targetPlayer.setMetadata("vanished", newValue);
+//                        targetPlayer.sendMessage(ChatColor.GREEN + "Immunity and barrier granted.");
+//                        player.sendMessage(ChatColor.GREEN + "Changed " + name + " to immune mode.");                        
+//                    }
                 }
             }
             
