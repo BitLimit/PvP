@@ -47,11 +47,11 @@ public class BitLimitPvPListener implements Listener {
         PlayerInventory inventory = player.getInventory(); // The player's inventory
         
         ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
-        sword.addEnchantment(Enchantment.DURABILITY, 10);
+        sword.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 
         ItemStack bow = new ItemStack(Material.BOW, 1);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-        bow.addEnchantment(Enchantment.DURABILITY, 10);
+        bow.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 
         if (!inventory.contains(sword) && !inventory.contains(bow)) {
             ItemStack arrow = new ItemStack(Material.ARROW, 1);
@@ -63,10 +63,10 @@ public class BitLimitPvPListener implements Listener {
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
             ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
             
-            boots.addEnchantment(Enchantment.DURABILITY, 10);
-            leggings.addEnchantment(Enchantment.DURABILITY, 10);
-            chestplate.addEnchantment(Enchantment.DURABILITY, 10);
-            helmet.addEnchantment(Enchantment.DURABILITY, 10);
+            boots.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
+            leggings.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
+            chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
+            helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
             
             armor[0] = boots;
             armor[1] = leggings;
@@ -105,11 +105,11 @@ public class BitLimitPvPListener implements Listener {
         PlayerInventory inventory = player.getInventory(); // The player's inventory
         
         ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
-        sword.addEnchantment(Enchantment.DURABILITY, 10);
+        sword.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 
         ItemStack bow = new ItemStack(Material.BOW, 1);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-        bow.addEnchantment(Enchantment.DURABILITY, 10);
+        bow.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
         ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
@@ -120,10 +120,10 @@ public class BitLimitPvPListener implements Listener {
         ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
         ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
 
-        boots.addEnchantment(Enchantment.DURABILITY, 10);
-        leggings.addEnchantment(Enchantment.DURABILITY, 10);
-        chestplate.addEnchantment(Enchantment.DURABILITY, 10);
-        helmet.addEnchantment(Enchantment.DURABILITY, 10);
+        boots.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
+        leggings.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
+        chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
+        helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 
         armor[0] = boots;
         armor[1] = leggings;
