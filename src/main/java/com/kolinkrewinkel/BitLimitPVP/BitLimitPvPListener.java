@@ -122,30 +122,6 @@ public class BitLimitPvPListener implements Listener {
             killer.setLevel(oldLevel + 1);
         }
     }
-    
-//    @EventHandler
-//    public void onEntityDamage(EntityDamageEvent e) {
-//        if (e.getCause() == DamageCause.ENTITY_ATTACK || e.getCause() == DamageCause.PROJECTILE) {
-//            EntityDamageByEntityEvent event = (EntityDamageByEntityEvent)e;
-//            Entity damager = event.getDamager();
-//            Entity damagee = event.getEntity();
-//            
-//            if (damager instanceof Player && damagee instanceof Player) {
-//                Player attacker = (Player)damager;
-//                Player defender = (Player)damagee;
-//                Player killer = defender.getKiller();
-//                
-//                if (defender.isDead() || defender.getHealth() <= 0) {
-//                    defender.sendMessage("You were killed.");
-//                    int oldLevel = attacker.getLevel();
-//                    attacker.setLevel(oldLevel + 1);
-//                    attacker.sendMessage("Killed someone.");
-//                }
-//                
-//            }
-//        }
-//
-//    }
 
     private WorldGuardPlugin getWorldGuard(Player player)
     {
