@@ -23,7 +23,6 @@ commands:
     permission: sample.message
   immunity:
     description: Grants immunity to provided player
-    usage: /<command> player
   admin:
     description: WIP - Match info used by BitLimit PvP
     usage: /<command> [message]

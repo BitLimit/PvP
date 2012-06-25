@@ -28,12 +28,16 @@ public class ImmunityCommandExecutor implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Please provide a player.");
+        if (sender instanceof Player) {
+            Player player = (Player)sender;
+            if (args.length == 0) {
+                player.sendMessage(ChatColor.RED + "Please provide a player.");
+                return true;
+            }
+
+            return true;
         }
-
-
-        
+                
         return false;
     }
 }
