@@ -47,18 +47,32 @@ public class BitLimitPvPListener implements Listener {
         PlayerInventory inventory = player.getInventory(); // The player's inventory
         
         ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
+        sword.addEnchantment(Enchantment.DURABILITY, 10);
+
         ItemStack bow = new ItemStack(Material.BOW, 1);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-        
+        bow.addEnchantment(Enchantment.DURABILITY, 10);
+
         if (!inventory.contains(sword) && !inventory.contains(bow)) {
             ItemStack arrow = new ItemStack(Material.ARROW, 1);
             ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
             
             ItemStack[] armor = new ItemStack[4];
-            armor[0] = new ItemStack(Material.LEATHER_BOOTS, 1);
-            armor[1] = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-            armor[2] = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-            armor[3] = new ItemStack(Material.LEATHER_HELMET, 1);
+            ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+            ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+            ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+            ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
+            
+            boots.addEnchantment(Enchantment.DURABILITY, 10);
+            leggings.addEnchantment(Enchantment.DURABILITY, 10);
+            chestplate.addEnchantment(Enchantment.DURABILITY, 10);
+            helmet.addEnchantment(Enchantment.DURABILITY, 10);
+            
+            armor[0] = boots;
+            armor[1] = leggings;
+            armor[2] = chestplate;
+            armor[3] = helmet;
+
             inventory.setArmorContents(armor);
             
             inventory.addItem(sword);
@@ -91,19 +105,31 @@ public class BitLimitPvPListener implements Listener {
         PlayerInventory inventory = player.getInventory(); // The player's inventory
         
         ItemStack sword = new ItemStack(Material.IRON_SWORD, 1);
-        sword.addEnchantment(Enchantment.UNBREAKING, 10);
+        sword.addEnchantment(Enchantment.DURABILITY, 10);
+
         ItemStack bow = new ItemStack(Material.BOW, 1);
         bow.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-        bow.addEnchantment(Enchantment.UNBREAKING, 10);
+        bow.addEnchantment(Enchantment.DURABILITY, 10);
+
         ItemStack arrow = new ItemStack(Material.ARROW, 1);
         ItemStack food = new ItemStack(Material.COOKED_BEEF, 8);
         
         ItemStack[] armor = new ItemStack[4];
-        armor[0] = new ItemStack(Material.LEATHER_BOOTS, 1);
-        armor[1] = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-        armor[2] = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-        armor[3] = new ItemStack(Material.LEATHER_HELMET, 1);
-        armor.addEnchantment(Enchantment.UNBREAKING, 10);
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+        ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+        ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+        ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
+
+        boots.addEnchantment(Enchantment.DURABILITY, 10);
+        leggings.addEnchantment(Enchantment.DURABILITY, 10);
+        chestplate.addEnchantment(Enchantment.DURABILITY, 10);
+        helmet.addEnchantment(Enchantment.DURABILITY, 10);
+
+        armor[0] = boots;
+        armor[1] = leggings;
+        armor[2] = chestplate;
+        armor[3] = helmet;
+
         inventory.setArmorContents(armor);
         
         inventory.addItem(sword);
