@@ -8,25 +8,12 @@ softdepend: [WorldGuard]
 commands:
   map:
     description: WIP - Controls Maps used by BitLimit PvP
-    permission: sample.message
-    usage: |
-      /<command> info.
-      /<command> region.
-      /<command> idk.
   team:
     description: WIP - Team info used by BitLimit PvP
-    usage: /<command> [message]
-    permission: sample.message
   match:
     description: WIP - Match info used by BitLimit PvP
-    usage: /<command> [message]
-    permission: sample.message
-  immunity:
-    description: Grants immunity to provided player
   admin:
-    description: WIP - Match info used by BitLimit PvP
-    usage: /<command> [message]
-    permission: sample.message
+    description: WIP - Admin commands used by BitLimit PvP
 
 permissions:
   bitlimit.*:
