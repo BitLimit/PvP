@@ -4,12 +4,10 @@ import java.util.*;
 import java.util.logging.Level;
 import com.google.common.base.Joiner;
 
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.command.*;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
 
 public class MapCommandExecutor implements CommandExecutor {
     private final BitLimitPvP plugin;
@@ -40,7 +38,7 @@ public class MapCommandExecutor implements CommandExecutor {
 
                 String worldName = args[1];
 
-                boolean canCreate = canCreateMapDefinitionWithWorldName(worldName);
+                boolean canCreate = createMapDefinitionWithWorldName(worldName, sender);
                 if (canCreate) {
                     sender.sendMessage(ChatColor.GREEN + "Yes.");
                 } else {
@@ -56,23 +54,22 @@ public class MapCommandExecutor implements CommandExecutor {
         return false;
     }
 
-    private boolean canCreateMapDefinitionWithWorldName(String worldName) {
-        List worlds = Bukkit.getWorlds();
+    private boolean createMapDefinitionWithWorldName(String worldName, CommandSender sender) {
 
-        ArrayList worldNames = new ArrayList();
-
-        Iterator worldItr = worlds.listIterator();
-
-        while (worldItr.hasNext()) {
-            World otherWorld = (World)worldItr.next();
-            worldNames.add(otherWorld.getName());
+        WorldCreator creator = new WorldCreator(worldName);
+        creator.generateStructures(false);
+        long seed = 911002014; // Porsche reference.  Because it's always necessary to include a Porsche reference.
+        creator.seed(seed);
+        creator.type(WorldType.FLAT);
+        World resultWorld = Bukkit.getServer().createWorld(creator);
+        if (sender instanceof Player) {
+            Player player = (Player)sender;
+            player.teleport(resultWorld.getSpawnLocation());
         }
 
-        plugin.getLogger().log(Level.FINEST, worldNames.toString());
+        
 
-        if (worldNames.contains(worldName)) {
-            return true;
-        }
+        plugin.getLogger().log(Level.SEVERE, Bukkit.getWorlds().toString());
         
         return false;
     }
