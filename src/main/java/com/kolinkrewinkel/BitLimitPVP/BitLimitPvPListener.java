@@ -31,13 +31,13 @@ public class BitLimitPvPListener implements Listener {
     private final BitLimitPvP plugin; // Reference main plugin
 //	private Random rand = new Random(System.nanoTime()); // Random respawn controller
 //    
-//    public BitLimitPvPListener(BitLimitPvP plugin) {
-//        // Register the listener
-//        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-//        
-//        this.plugin = plugin;
-//    }
-//    
+    public BitLimitPvPListener(BitLimitPvP plugin) {
+        // Register the listener
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        
+        this.plugin = plugin;
+    }
+//
 //    /*
 //     * Send the sample message to all players that join
 //     */
