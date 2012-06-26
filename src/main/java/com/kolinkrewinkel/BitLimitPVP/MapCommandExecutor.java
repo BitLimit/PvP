@@ -32,31 +32,18 @@ public class MapCommandExecutor implements CommandExecutor {
      * On command set the sample message
      */
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender.hasPermission("BitLimitPvP") && args.length > 0) {
-
-            if (sender instanceof Player) {
-                //Then we cast the sender to player,which means now we can handle him through 'player' variable like any other players
-                Player player = (Player) sender;
-
-                WorldGuardPlugin worldGuard = getWorldGuard(sender);
-                Vector pt = toVector(player.getLocation()); // This also takes a location
-                LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
-                
-                RegionManager regionManager = worldGuard.getRegionManager(player.getWorld());
-                ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
-
-                Iterator itr = set.iterator();
-                while (itr.hasNext()) {
-                    ProtectedRegion region = (ProtectedRegion)itr.next();
-                    sender.sendMessage(region.getId());
-                }
+        if (sender.hasPermission("BitLimitPvP")) {
+            if (args.length == 0) {
+                sender.sendMessage("/map usage", "/map define");
+                return true;
             }
-            
 
+            if (args[0].equals("define") && args.length == 1) {
+                sender.sendMessage(args[1].toString());
+            }
 
-//            this.plugin.getConfig().set("BitLimitPvP.message", Joiner.on(' ').join(args));
             return true;
-        }
+        } 
         
         return false;
     }
