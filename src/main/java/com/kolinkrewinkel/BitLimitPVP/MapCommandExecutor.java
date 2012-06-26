@@ -33,7 +33,6 @@ public class MapCommandExecutor implements CommandExecutor {
      */
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender.hasPermission("BitLimitPvP") && args.length > 0) {
-
             if (sender instanceof Player) {
                 //Then we cast the sender to player,which means now we can handle him through 'player' variable like any other players
                 Player player = (Player) sender;
@@ -51,10 +50,6 @@ public class MapCommandExecutor implements CommandExecutor {
                     sender.sendMessage(region.getId());
                 }
             }
-            
-
-
-//            this.plugin.getConfig().set("BitLimitPvP.message", Joiner.on(' ').join(args));
             return true;
         }
         

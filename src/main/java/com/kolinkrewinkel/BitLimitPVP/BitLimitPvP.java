@@ -10,15 +10,10 @@ public class BitLimitPvP extends JavaPlugin {
         new BitLimitPvPListener(this);
 
         this.getCommand("map").setExecutor(new MapCommandExecutor(this));
-        this.getCommand("immunity").setExecutor(new ImmunityCommandExecutor(this));
     }
     
-    /*
-     * This is called when your plug-in shuts down
-     */
     @Override
-    public void onDisable() {        
-        // save the configuration file, if there are no values, write the defaults.
+    public void onDisable() {
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
     }
