@@ -98,6 +98,8 @@ public class MapCommandExecutor implements CommandExecutor {
                     
                     
                     return true;
+                } else {
+                    
                 }
 
             }
