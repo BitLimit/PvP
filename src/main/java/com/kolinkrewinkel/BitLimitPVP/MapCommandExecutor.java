@@ -39,6 +39,11 @@ public class MapCommandExecutor implements CommandExecutor {
 
                 String worldName = args[1];
 
+                if (plugin.getConfig().getList("maps." + worldName) != null) {
+                    sender.sendMessage(ChatColor.RED + "A map with using this world already exists.");
+                    return false;
+                }
+
                 // Check for existing world with name.
                 World newWorld = Bukkit.getServer().getWorld(worldName);
 
