@@ -63,13 +63,20 @@ public class MapCommandExecutor implements CommandExecutor {
         creator.type(WorldType.FLAT);
         World resultWorld = Bukkit.getServer().createWorld(creator);
         if (sender instanceof Player) {
-            Player player = (Player)sender;
-            player.teleport(resultWorld.getSpawnLocation());
+            Player players[] = Bukkit.getServer().getOnlinePlayers();
+            ListIterator iterator = players.getListIterator();
+
+            while (iterator.hasNext()) {
+                Player individual = iterator.next();
+                player.teleport(resultWorld.getSpawnLocation());
+            }
+
+            return true;
         }
 
         
 
-        plugin.getLogger().log(Level.SEVERE, Bukkit.getWorlds().toString());
+        plugin.getLogger().log(Level.INFO, Bukkit.getWorlds().toString());
         
         return false;
     }
