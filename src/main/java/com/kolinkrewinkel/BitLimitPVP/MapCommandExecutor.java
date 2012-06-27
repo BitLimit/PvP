@@ -8,7 +8,6 @@ import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.*;
 
 public class MapCommandExecutor implements CommandExecutor {
     private final BitLimitPvP plugin;
@@ -78,7 +77,7 @@ public class MapCommandExecutor implements CommandExecutor {
                 String worldName = plugin.getConfig().getString("maps." + worldName + ".world");
                 
                 WorldCreator creator = new WorldCreator(worldName);
-                World nextWorld = Bukkit.getServer().creatWorld(creator);
+                World nextWorld = Bukkit.getServer().createWorld(creator);
                 if (nextWorld) {
                     teleportPlayersToWorld(Bukkit.getServer().getOnlinePlayers(), nextWorld);
                 } else {
@@ -124,10 +123,6 @@ public class MapCommandExecutor implements CommandExecutor {
         for (Player player : players) {
             // Move all players to new map
             player.teleport(spawnPoint);
-
-            // Add a teleportation effect for a couple of seconds
-            PotionEffect confusion = new PotionEffect(PotionEffect.CONFUSION, 150, 1);
-            confusion.apply(player);
         }
     }
     
