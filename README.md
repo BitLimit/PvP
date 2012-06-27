@@ -1,4 +1,7 @@
-BitLimitPVP
-===========
+BitLimit PvP
+===
+PvP Plugin Made for [Coestar's](http://youtube.com/user/Coestar) [BitLimit Servers](http://maps.bitlimit.com/).
 
-PVP Plugin Made for Coestar's BitLimit Servers
+Usage
+===
+Define a world using `/map define [worldname]`
