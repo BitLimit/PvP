@@ -23,7 +23,7 @@ public class BitLimitPvPListener implements Listener {
     @EventHandler
     public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
         // Add a teleportation effect for a couple of seconds
-        PotionEffect confusion = new PotionEffect(PotionEffectType.CONFUSION, 150, 1);
+        PotionEffect confusion = new PotionEffect(PotionEffectType.CONFUSION, 150, 0);
         confusion.apply(event.getPlayer());
     }
 }
