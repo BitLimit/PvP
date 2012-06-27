@@ -8,6 +8,7 @@ import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.*;
 
 public class MapCommandExecutor implements CommandExecutor {
     private final BitLimitPvP plugin;
@@ -62,13 +63,15 @@ public class MapCommandExecutor implements CommandExecutor {
         creator.seed(seed);
         creator.type(WorldType.FLAT);
         World resultWorld = Bukkit.getServer().createWorld(creator);
-        if (sender instanceof Player) {
-            Player players[] = Bukkit.getServer().getOnlinePlayers();
-            ListIterator iterator = players.getListIterator();
+        if (sender instanceof Player && resultWorld != null) {
+            // Send all players to the new world
+            Player[] players = Bukkit.getServer().getOnlinePlayers();
 
-            while (iterator.hasNext()) {
-                Player individual = iterator.next();
+            for (Player player : players) {
                 player.teleport(resultWorld.getSpawnLocation());
+
+                PotionEffect potionEffect = new PotionEffect(PotionEffectType.CONFUSION, 3, 1);
+                player.addPotionEffect(potionEffect, false);
             }
 
             return true;
