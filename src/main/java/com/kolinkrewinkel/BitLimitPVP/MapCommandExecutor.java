@@ -70,8 +70,10 @@ public class MapCommandExecutor implements CommandExecutor {
             for (Player player : players) {
                 player.teleport(resultWorld.getSpawnLocation());
 
-                PotionEffect potionEffect = new PotionEffect(PotionEffectType.CONFUSION, 3, 1);
-                player.addPotionEffect(potionEffect, false);
+                PotionEffect potionEffect = new PotionEffect(PotionEffectType.CONFUSION, 175, 1);
+                PotionEffect nightVision = new PotionEffect(PotionEffectType.NIGHT_VISION, 175, 1);
+                potionEffect.apply(player);
+                nightVision.apply(player);
             }
 
             return true;
