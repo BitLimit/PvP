@@ -58,7 +58,7 @@ public class MapCommandExecutor implements CommandExecutor {
                 sender.sendMessage(ChatColor.GREEN + "World successfully loaded with name " + ChatColor.WHITE + worldName + ChatColor.GREEN + ".");
 
                 // Save it in config
-                plugin.getConfig().set("maps" + worldName + "world", worldName);
+                plugin.getConfig().set("maps." + worldName + ".world", worldName);
                 plugin.saveConfig();
 
                 return true;
