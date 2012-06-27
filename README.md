@@ -5,4 +5,4 @@ PvP Plugin Made for [Coestar's](http://youtube.com/user/Coestar) [BitLimit Serve
 Authored by [Kolin Krewinkel](http://twitter.com/kkrewink).
 Usage
 ===
-Define a world using `/map define [worldname]`
+Define a map using `/map define [worldname]`
