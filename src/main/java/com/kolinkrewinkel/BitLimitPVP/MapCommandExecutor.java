@@ -38,15 +38,28 @@ public class MapCommandExecutor implements CommandExecutor {
                 }
 
                 String worldName = args[1];
-                World newWorld = getWorld(worldName);
 
+                // Check for existing world with name.
+                World newWorld = Bukkit.getServer().getWorld(worldName);
+
+                // No world already exists with this name, create it for them.
                 if (newWorld == null) {
                     newWorld = createMapDefinitionWithWorldName(worldName);
+
+                    if (newWorld == null) {
+                        newWorld = Bukkit.getServer().getWorld(worldName);
+                        if (newWorld == null) {
+                            sender.sendMessage(ChatColor.RED + "No world by this name could be found nor created.");
+                            return false;
+                        }
+                    }
                 }
 
-                
-                plugin.getLogger().log(Level.INFO, Bukkit.getWorlds().toString());
+                sender.sendMessage(ChatColor.GREEN + "World successfully loaded with name " + ChatColor.WHITE + worldName + ChatColor.GREEN + ".");
 
+                // Save it in config
+                plugin.getConfig().set("maps" + worldName + "world", worldName);
+                plugin.saveConfig();
 
                 return true;
             }
@@ -65,7 +78,9 @@ public class MapCommandExecutor implements CommandExecutor {
         long seed = 911002014; // Porsche reference.  Because it's always necessary to include a Porsche reference.
         creator.seed(seed);
 
+        // Create the world with specified attributes
         World resultWorld = Bukkit.getServer().createWorld(creator);
+
         return resultWorld;
     }
     
