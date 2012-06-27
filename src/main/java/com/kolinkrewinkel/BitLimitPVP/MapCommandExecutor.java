@@ -103,5 +103,18 @@ public class MapCommandExecutor implements CommandExecutor {
 
         return false;
     }
+
+    private void teleportPlayersToWorld(Player[] players, World world) {
+        // Location of next world's spawn
+        Location spawnPoint = world.getSpawnLocation();
+        for (Player player : players) {
+            // Move all players to new map
+            player.teleport(spawnPoint);
+
+            // Add a teleportation effect for a couple of seconds
+            PotionEffect confusion = new PotionEffect(PotionEffect.CONFUSION, 150, 1);
+            confusion.apply(player);
+        }
+    }
     
 }
