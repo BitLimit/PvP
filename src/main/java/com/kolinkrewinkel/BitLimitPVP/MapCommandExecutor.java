@@ -39,7 +39,7 @@ public class MapCommandExecutor implements CommandExecutor {
 
                 String worldName = args[1];
 
-                if (plugin.getConfig().getList("maps." + worldName) != null) {
+                if (plugin.getConfig().getList("maps." + worldName).size() > 0) {
                     sender.sendMessage(ChatColor.RED + "A map with using this world already exists.");
                     return false;
                 }
