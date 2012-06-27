@@ -83,6 +83,23 @@ public class MapCommandExecutor implements CommandExecutor {
                 } else {
                     sender.sendMessage(ChatColor.RED + "The world configured for this map could not be found.");
                 }
+            } else if (args[0].equals("flag")) {
+                String mapName = args[1];
+                String requestedKey = args[2];
+                
+                if (args.length == 3) {
+                    Object returnValue = plugin.getConfig().get("maps." + mapName + "." + requestedKey);
+
+                    if (returnValue == null) {
+                        sender.sendMessage(ChatColor.RED + "Requested flag not found.");
+                    } else {
+                        sender.sendMessage(ChatColor.WHITE + returnValue.toString());
+                    }
+                    
+                    
+                    return true;
+                }
+
             }
             
             return true;
