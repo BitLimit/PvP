@@ -22,45 +22,45 @@ public class MapCommandExecutor implements CommandExecutor {
         if (sender.hasPermission("BitLimitPvP")) {
             // Passed no arguments, return possible arguments
             if (args.length == 0) {
-                String[] messages = new String[2];
+                String[] messages = new String[3];
                 messages[0] = ChatColor.GREEN + "/map usage";
                 messages[1] = "/map define [world name]";
+                messages[2] = "/map load [map/world name]";
                 sender.sendMessage(messages);
                 return true;
             }
 
             // Define a map
             if (args[0].equals("define")) {
+                // Check if world name was supplied.
                 if (args.length == 1) {
                     sender.sendMessage(ChatColor.RED + "Supply a world name.");
-
                     return false;
                 }
 
+                // Quick reference to argument after define (name.)
                 String worldName = args[1];
 
-                List attributeList = plugin.getConfig().getStringList("maps." + worldName);
-                if (attributeList != null) {
-                    sender.sendMessage(ChatColor.RED + "Map with provided name already exists.");
+                // Return if map is already defined in config.
+                if (mapExistsWithNameNotifySender(worldName, sender))
                     return false;
-                }
 
-                // Check for existing world with name.
+                // Check for existing loaded world with name.
                 World newWorld = Bukkit.getServer().getWorld(worldName);
 
                 // No world already exists with this name, create it for them.
                 if (newWorld == null) {
                     newWorld = createMapDefinitionWithWorldName(worldName);
 
+                    // World still could not be created for some reason, fail.
                     if (newWorld == null) {
                         newWorld = Bukkit.getServer().getWorld(worldName);
-                        if (newWorld == null) {
-                            sender.sendMessage(ChatColor.RED + "No world by this name could be found nor created.");
-                            return false;
-                        }
+                        sender.sendMessage(ChatColor.RED + "No world by this name could be found nor created.");
+                        return false;
                     }
                 }
 
+                // World was loaded successfully: notify.
                 sender.sendMessage(ChatColor.GREEN + "World successfully loaded with name " + ChatColor.WHITE + worldName + ChatColor.GREEN + ".");
 
                 // Save it in config
@@ -68,6 +68,8 @@ public class MapCommandExecutor implements CommandExecutor {
                 plugin.saveConfig();
 
                 return true;
+            } else if (args[0].equals("load")) {
+                
             }
             
             return true;
@@ -88,6 +90,18 @@ public class MapCommandExecutor implements CommandExecutor {
         World resultWorld = Bukkit.getServer().createWorld(creator);
 
         return resultWorld;
+    }
+
+    private boolean mapExistsWithNameNotifySender(String worldName, CommandSender sender) {
+        String existingWorldCheck = plugin.getConfig().getString("maps." + worldName + ".world");
+        
+        if (existingWorldCheck != null) {
+            sender.sendMessage(ChatColor.RED + "Map with provided name already exists.");
+            
+            return true;
+        }
+
+        return false;
     }
     
 }
