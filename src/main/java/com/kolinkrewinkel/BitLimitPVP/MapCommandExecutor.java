@@ -38,13 +38,15 @@ public class MapCommandExecutor implements CommandExecutor {
                 }
 
                 String worldName = args[1];
+                World newWorld = getWorld(worldName);
 
-                boolean canCreate = createMapDefinitionWithWorldName(worldName, sender);
-                if (canCreate) {
-                    sender.sendMessage(ChatColor.GREEN + "Yes.");
-                } else {
-                    sender.sendMessage(ChatColor.RED + "No.");
+                if (newWorld == null) {
+                    newWorld = createMapDefinitionWithWorldName(worldName);
                 }
+
+                
+                plugin.getLogger().log(Level.INFO, Bukkit.getWorlds().toString());
+
 
                 return true;
             }
@@ -55,35 +57,16 @@ public class MapCommandExecutor implements CommandExecutor {
         return false;
     }
 
-    private boolean createMapDefinitionWithWorldName(String worldName, CommandSender sender) {
-
+    private World createMapDefinitionWithWorldName(String worldName) {
         WorldCreator creator = new WorldCreator(worldName);
         creator.generateStructures(false);
+        creator.type(WorldType.FLAT);
+
         long seed = 911002014; // Porsche reference.  Because it's always necessary to include a Porsche reference.
         creator.seed(seed);
-        creator.type(WorldType.FLAT);
+
         World resultWorld = Bukkit.getServer().createWorld(creator);
-        if (sender instanceof Player && resultWorld != null) {
-            // Send all players to the new world
-            Player[] players = Bukkit.getServer().getOnlinePlayers();
-
-            for (Player player : players) {
-                player.teleport(resultWorld.getSpawnLocation());
-
-                PotionEffect potionEffect = new PotionEffect(PotionEffectType.CONFUSION, 175, 1);
-                PotionEffect nightVision = new PotionEffect(PotionEffectType.NIGHT_VISION, 175, 1);
-                potionEffect.apply(player);
-                nightVision.apply(player);
-            }
-
-            return true;
-        }
-
-        
-
-        plugin.getLogger().log(Level.INFO, Bukkit.getWorlds().toString());
-        
-        return false;
+        return resultWorld;
     }
     
 }
