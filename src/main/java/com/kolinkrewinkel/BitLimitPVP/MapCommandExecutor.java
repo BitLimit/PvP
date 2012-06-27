@@ -22,9 +22,9 @@ public class MapCommandExecutor implements CommandExecutor {
             // Passed no arguments, return possible arguments
             if (args.length == 0) {
                 String[] messages = new String[3];
-                messages[0] = ChatColor.GREEN + "/map usage";
-                messages[1] = "/map define [world name]";
-                messages[2] = "/map load [map/world name]";
+                messages[0] = ChatColor.GOLD + "/map usage";
+                messages[1] = "/map define [world name]" + ChatColor.GRAY + " • Creates a new map definition based on provided world name (inherits name).";
+                messages[2] = "/map load [map/world name]" + ChatColor.GRAY + " • Loads provided map if it's defined and teleports connected players to it.";
                 sender.sendMessage(messages);
                 return true;
             }
@@ -86,7 +86,11 @@ public class MapCommandExecutor implements CommandExecutor {
             } else if (args[0].equals("flag")) {
                 String mapName = args[1];
                 String requestedKey = args[2];
-                
+
+                if (mapName == null) {
+                    
+                }
+
                 if (args.length == 3) {
                     Object returnValue = plugin.getConfig().get("maps." + mapName + "." + requestedKey);
 
