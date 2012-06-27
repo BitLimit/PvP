@@ -74,11 +74,11 @@ public class MapCommandExecutor implements CommandExecutor {
                 }
 
                 // Get the world name and load it from disk
-                String worldName = plugin.getConfig().getString("maps." + worldName + ".world");
+                String worldName = plugin.getConfig().getString("maps." + args[1] + ".world");
                 
                 WorldCreator creator = new WorldCreator(worldName);
                 World nextWorld = Bukkit.getServer().createWorld(creator);
-                if (nextWorld) {
+                if (nextWorld != null) {
                     teleportPlayersToWorld(Bukkit.getServer().getOnlinePlayers(), nextWorld);
                 } else {
                     sender.sendMessage(ChatColor.RED + "The world configured for this map could not be found.");
