@@ -7,6 +7,7 @@ import com.google.common.base.Joiner;
 import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.command.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class MapCommandExecutor implements CommandExecutor {
@@ -84,15 +85,22 @@ public class MapCommandExecutor implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "The world configured for this map could not be found.");
                 }
             } else if (args[0].equals("flag")) {
+                FileConfiguration configuration = plugin.getConfig();
+                
+                if (!args.length >= 2) {
+                    sender.sendMessage(ChatColor.RED + "A map name must be specified.");
+                    return false;
+                } else if (args.length == 3) {
+                    String mapName = args[1];
+                    Object returnValue = configuration.get("maps." + mapName);
+                    sender.sendMessage(ChatColor.WHITE + returnValue);
+                }
+
                 String mapName = args[1];
                 String requestedKey = args[2];
 
-                if (mapName == null) {
-                    
-                }
-
                 if (args.length == 3) {
-                    Object returnValue = plugin.getConfig().get("maps." + mapName + "." + requestedKey);
+                    Object returnValue = configuration.get("maps." + mapName + "." + requestedKey);
 
                     if (returnValue == null) {
                         sender.sendMessage(ChatColor.RED + "Requested flag not found.");
