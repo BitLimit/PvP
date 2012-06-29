@@ -144,6 +144,7 @@ public class MapCommandExecutor implements CommandExecutor {
 
                                 } else {
                                     sender.sendMessage(ChatColor.RED + "A player is required to set this command.");
+                                    return false;
                                 }
                             } else {
                                 configuration.set("maps." + mapName + "." + keyToSet, replacementValue);
