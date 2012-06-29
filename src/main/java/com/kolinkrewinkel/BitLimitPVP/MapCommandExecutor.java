@@ -127,8 +127,15 @@ public class MapCommandExecutor implements CommandExecutor {
 
                     List potentialValues = new ArrayList() {{ add("world"); add("block-place"); }};
                     
+
                     if (potentialValues.contains(keyToSet)) {
-                        sender.sendMessage(ChatColor.GREEN + "Valid key.");
+                        if (datatypeMatchesKey(keyToSet, replacementValue)) {
+                            configuration.set("maps." + mapName + "." + keyToSet, replacementValue);
+                            plugin.saveConfig();
+                            sender.sendMessage(ChatColor.GREEN + "Configuration updated.");
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "Invalid datatype.");
+                        }
                     } else {
                         sender.sendMessage(ChatColor.DARK_RED + "Invalid key.  These keys are valid: " + ChatColor.RED + "world (do not edit without changing map name manually in config), block-place");
                     }
@@ -178,6 +185,20 @@ public class MapCommandExecutor implements CommandExecutor {
             // Move all players to new map
             player.teleport(spawnPoint);
         }
+    }
+
+    private boolean datatypeMatchesKey(String key, Object dataType) {
+        if (key.equals("world")) {
+            if (dataType instanceof String)
+                return true;
+            else
+                return false;
+
+        } else if (key.equals("block-place")) {
+            
+        }
+
+        return false;
     }
     
 }
