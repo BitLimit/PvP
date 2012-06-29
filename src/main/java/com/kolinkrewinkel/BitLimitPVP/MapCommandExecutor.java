@@ -94,7 +94,7 @@ public class MapCommandExecutor implements CommandExecutor {
                 } else if (args.length == 2) {
                     String mapName = args[1];
 
-                    MemorySection section = configuration.getConfigurationSection("maps." + mapName);
+                    ConfigurationSection section = configuration.getConfigurationSection("maps." + mapName);
                     if (section != null) {
                         Map <String, Object> values = section.getValues(true);
 
