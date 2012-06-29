@@ -137,9 +137,12 @@ public class MapCommandExecutor implements CommandExecutor {
                                     Player player = (Player)sender;
                                     Block block = player.getLocation().subtract(0,1,0).getBlock();
                                     if (block.getType() == Material.CHEST) {
-                                        sender.sendMessage(ChatColor.GREEN + "You're on a chest.");
+                                        Chest chest = (Chest)block;
+                                        configuration.set("maps." + mapName + "." + keyToSet, chest.getInventory().getContents());
+
                                     } else {
                                         sender.sendMessage(ChatColor.RED + "A chest is required to set items.");
+                                        return false;
                                     }
 
                                 } else {
