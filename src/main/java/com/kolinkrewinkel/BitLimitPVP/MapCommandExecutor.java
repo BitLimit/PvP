@@ -7,6 +7,7 @@ import com.google.common.base.Joiner;
 import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.command.*;
+import org.bukkit.configuration.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -87,13 +88,30 @@ public class MapCommandExecutor implements CommandExecutor {
             } else if (args[0].equals("flag")) {
                 FileConfiguration configuration = plugin.getConfig();
                 
-                if (!args.length >= 2) {
+                if (args.length < 2) {
                     sender.sendMessage(ChatColor.RED + "A map name must be specified.");
                     return false;
-                } else if (args.length == 3) {
+                } else if (args.length == 2) {
                     String mapName = args[1];
-                    Object returnValue = configuration.get("maps." + mapName);
-                    sender.sendMessage(ChatColor.WHITE + returnValue);
+                    
+                    Set keys = configuration.getConfigurationSection("maps." + mapName).getKeys(true);
+                    Set values = configuration.getConfigurationSection("maps." + mapName).getValues(true);
+
+
+                    if (keys != null && values != null) {
+                        Iterator iterator = keys.iterator();
+                        int loop = 0;
+                        while (iterator.hasNext()) {
+                            sender.sendMessage(ChatColor.GOLD + iterator.next().toString() + ": " + ChatColor.WHITE + values.get(loop));
+                            loop++;
+                        }
+
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "Map with specified name could not be found.");
+                    }
+
+
+                    return true;
                 }
 
                 String mapName = args[1];
