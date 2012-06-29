@@ -30,7 +30,7 @@ public class MapCommandExecutor implements CommandExecutor {
                 sender.sendMessage(messages);
                 return true;
             }
-
+            
             // Define a map
             if (args[0].equals("define")) {
                 // Check if world name was supplied.
@@ -38,21 +38,21 @@ public class MapCommandExecutor implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "Supply a world name.");
                     return false;
                 }
-
+                
                 // Quick reference to argument after define (name.)
                 String worldName = args[1];
-
+                
                 // Return if map is already defined in config.
                 if (mapExistsWithNameNotifySender(worldName, sender))
                     return false;
-
+                
                 // Check for existing loaded world with name.
                 World newWorld = Bukkit.getServer().getWorld(worldName);
-
+                
                 // No world already exists with this name, create it for them.
                 if (newWorld == null) {
                     newWorld = createMapDefinitionWithWorldName(worldName);
-
+                    
                     // World still could not be created for some reason, fail.
                     if (newWorld == null) {
                         newWorld = Bukkit.getServer().getWorld(worldName);
@@ -60,21 +60,21 @@ public class MapCommandExecutor implements CommandExecutor {
                         return false;
                     }
                 }
-
+                
                 // World was loaded successfully: notify.
                 sender.sendMessage(ChatColor.GREEN + "World successfully loaded with name " + ChatColor.WHITE + worldName + ChatColor.GREEN + ".");
-
+                
                 // Save it in config
                 plugin.getConfig().set("maps." + worldName + ".world", worldName);
                 plugin.saveConfig();
-
+                
                 return true;
             } else if (args[0].equals("load")) {
                 if (args.length == 1) {
                     sender.sendMessage(ChatColor.RED + "Supply a map name.");
                     return false;
                 }
-
+                
                 // Get the world name and load it from disk
                 String worldName = plugin.getConfig().getString("maps." + args[1] + ".world");
                 
@@ -93,11 +93,11 @@ public class MapCommandExecutor implements CommandExecutor {
                     return false;
                 } else if (args.length == 2) {
                     String mapName = args[1];
-
+                    
                     ConfigurationSection section = configuration.getConfigurationSection("maps." + mapName);
                     if (section != null) {
                         Map <String, Object> values = section.getValues(true);
-
+                        
                         if (values != null) {
                             for (Map.Entry<String, Object> entry : values.entrySet()) {
                                 sender.sendMessage(ChatColor.GOLD + entry.getKey() + ": " + ChatColor.WHITE + entry.getValue().toString());
@@ -106,29 +106,38 @@ public class MapCommandExecutor implements CommandExecutor {
                     } else {
                         sender.sendMessage(ChatColor.RED + "Map with specified name could not be found.");
                     }
-
-
-                    return true;
-                }
-
-                String mapName = args[1];
-                String requestedKey = args[2];
-
-                if (args.length == 3) {
+                    
+                } else if (args.length == 3) {
+                    
+                    String mapName = args[1];
+                    String requestedKey = args[2];
+                    
                     Object returnValue = configuration.get("maps." + mapName + "." + requestedKey);
-
+                    
                     if (returnValue == null) {
                         sender.sendMessage(ChatColor.RED + "Requested flag not found.");
                     } else {
                         sender.sendMessage(ChatColor.WHITE + returnValue.toString());
                     }
-                    
-                    
-                    return true;
-                } else {
-                    
-                }
 
+                } else if (args.length == 4) {
+                    String mapName = args[1];
+                    String keyToSet = args[2];
+                    String replacementValue = args[3];
+
+//                    List <String> potentialValues[] = new String[1];
+//                    potentialValues[0] = "world";
+//                    
+//                    if (potentialValues.asList().contains(keyToSet)) {
+//                        sender.sendMessage(ChatColor.GREEN + "Valid key.");
+//                    } else {
+//                        sender.sendMessage(ChatColor.DARK_RED + "Invalid key.  These keys are valid: " + ChatColor.RED + "world (do not edit without changing map name manually in config)");
+//                    }
+
+                    
+
+                }
+                    return true;                
             }
             
             return true;
@@ -136,21 +145,21 @@ public class MapCommandExecutor implements CommandExecutor {
         
         return false;
     }
-
+    
     private World createMapDefinitionWithWorldName(String worldName) {
         WorldCreator creator = new WorldCreator(worldName);
         creator.generateStructures(false);
         creator.type(WorldType.FLAT);
-
+        
         long seed = 911002014; // Porsche reference.  Because it's always necessary to include a Porsche reference.
         creator.seed(seed);
-
+        
         // Create the world with specified attributes
         World resultWorld = Bukkit.getServer().createWorld(creator);
-
+        
         return resultWorld;
     }
-
+    
     private boolean mapExistsWithNameNotifySender(String worldName, CommandSender sender) {
         String existingWorldCheck = plugin.getConfig().getString("maps." + worldName + ".world");
         
@@ -159,10 +168,10 @@ public class MapCommandExecutor implements CommandExecutor {
             
             return true;
         }
-
+        
         return false;
     }
-
+    
     private void teleportPlayersToWorld(Player[] players, World world) {
         // Location of next world's spawn
         Location spawnPoint = world.getSpawnLocation();
