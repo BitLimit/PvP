@@ -125,14 +125,13 @@ public class MapCommandExecutor implements CommandExecutor {
                     String keyToSet = args[2];
                     String replacementValue = args[3];
 
-//                    List <String> potentialValues[] = new String[1];
-//                    potentialValues[0] = "world";
-//                    
-//                    if (potentialValues.asList().contains(keyToSet)) {
-//                        sender.sendMessage(ChatColor.GREEN + "Valid key.");
-//                    } else {
-//                        sender.sendMessage(ChatColor.DARK_RED + "Invalid key.  These keys are valid: " + ChatColor.RED + "world (do not edit without changing map name manually in config)");
-//                    }
+                    List potentialValues = new ArrayList() {{ add("world"); add("block-place"); }};
+                    
+                    if (potentialValues.contains(keyToSet)) {
+                        sender.sendMessage(ChatColor.GREEN + "Valid key.");
+                    } else {
+                        sender.sendMessage(ChatColor.DARK_RED + "Invalid key.  These keys are valid: " + ChatColor.RED + "world (do not edit without changing map name manually in config), block-place");
+                    }
 
                     
 
