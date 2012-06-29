@@ -96,9 +96,9 @@ public class MapCommandExecutor implements CommandExecutor {
 
                     Map <String, Object> values = configuration.getConfigurationSection("maps." + mapName).getValues(true);
 
-                    if (values != null) {
-                        for (Map.Entry<String, String> entry : map.entrySet()) {
-                            sender.sendMessage(ChatColor.GOLD + entry.getKey() + ": " + ChatColor.WHITE + entry.getValue());
+                    if (values.entrySet().size() > 0) {
+                        for (Map.Entry<String, Object> entry : values.entrySet()) {
+                            sender.sendMessage(ChatColor.GOLD + entry.getKey() + ": " + ChatColor.WHITE + entry.getValue().toString());
                         }
                     } else {
                         sender.sendMessage(ChatColor.RED + "Map with specified name could not be found.");
