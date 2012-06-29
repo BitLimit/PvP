@@ -10,6 +10,8 @@ import org.bukkit.command.*;
 import org.bukkit.configuration.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.*;
+import org.bukkit.block.*;
 
 public class MapCommandExecutor implements CommandExecutor {
     private final BitLimitPvP plugin;
@@ -120,24 +122,39 @@ public class MapCommandExecutor implements CommandExecutor {
                         sender.sendMessage(ChatColor.WHITE + returnValue.toString());
                     }
 
-                } else if (args.length == 4) {
+                } else if (args.length >= 4) {
                     String mapName = args[1];
                     String keyToSet = args[2];
                     String replacementValue = args[3];
 
-                    List potentialValues = new ArrayList() {{ add("world"); add("block-place"); }};
+                    List potentialValues = new ArrayList() {{ add("world"); add("respawn-items"); }};
                     
 
                     if (potentialValues.contains(keyToSet)) {
                         if (datatypeMatchesKey(keyToSet, replacementValue)) {
-                            configuration.set("maps." + mapName + "." + keyToSet, replacementValue);
+                            if (keyToSet.equals("respawn-items") || keyToSet.equals("armor-items")) {
+                                if (sender instanceof Player) {
+                                    Player player = (Player)sender;
+                                    Block block = player.getLocation().subtract(0,1,0).getBlock();
+                                    if (block.getType() == Material.CHEST) {
+                                        sender.sendMessage(ChatColor.GREEN + "You're on a chest.");
+                                    } else {
+                                        sender.sendMessage(ChatColor.RED + "A chest is required to set items.");
+                                    }
+
+                                } else {
+                                    sender.sendMessage(ChatColor.RED + "A player is required to set this command.");
+                                }
+                            } else {
+                                configuration.set("maps." + mapName + "." + keyToSet, replacementValue);
+                            }
                             plugin.saveConfig();
                             sender.sendMessage(ChatColor.GREEN + "Configuration updated.");
                         } else {
                             sender.sendMessage(ChatColor.RED + "Invalid datatype.");
                         }
                     } else {
-                        sender.sendMessage(ChatColor.DARK_RED + "Invalid key.  These keys are valid: " + ChatColor.RED + "world (do not edit without changing map name manually in config), block-place");
+                        sender.sendMessage(ChatColor.DARK_RED + "Invalid key.  These keys are valid: " + ChatColor.RED + "world (do not edit without changing map name manually in config), respawn-items");
                     }
 
                     
@@ -194,8 +211,8 @@ public class MapCommandExecutor implements CommandExecutor {
             else
                 return false;
 
-        } else if (key.equals("block-place")) {
-            
+        } else if (key.equals("respawn-items")) {
+            return true;
         }
 
         return false;
