@@ -94,11 +94,14 @@ public class MapCommandExecutor implements CommandExecutor {
                 } else if (args.length == 2) {
                     String mapName = args[1];
 
-                    Map <String, Object> values = configuration.getConfigurationSection("maps." + mapName).getValues(true);
+                    MemorySection section = configuration.getConfigurationSection("maps." + mapName);
+                    if (section != null) {
+                        Map <String, Object> values = section.getValues(true);
 
-                    if (values.entrySet().size() > 0) {
-                        for (Map.Entry<String, Object> entry : values.entrySet()) {
-                            sender.sendMessage(ChatColor.GOLD + entry.getKey() + ": " + ChatColor.WHITE + entry.getValue().toString());
+                        if (values != null) {
+                            for (Map.Entry<String, Object> entry : values.entrySet()) {
+                                sender.sendMessage(ChatColor.GOLD + entry.getKey() + ": " + ChatColor.WHITE + entry.getValue().toString());
+                            }
                         }
                     } else {
                         sender.sendMessage(ChatColor.RED + "Map with specified name could not be found.");
