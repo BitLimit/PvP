@@ -84,6 +84,8 @@ public class MapCommandExecutor implements CommandExecutor {
                 World nextWorld = Bukkit.getServer().createWorld(creator);
                 if (nextWorld != null) {
                     teleportPlayersToWorld(Bukkit.getServer().getOnlinePlayers(), nextWorld);
+
+                    unloadAllKeepWorld(nextWorld);
                 } else {
                     sender.sendMessage(ChatColor.RED + "The world configured for this map could not be found.");
                 }
@@ -152,11 +154,11 @@ public class MapCommandExecutor implements CommandExecutor {
                                         items.removeAll(Collections.singleton(null));
 
                                         if (keyToSet.equals("respawn-items") && items.size() > 36) {
-                                            sender.sendMessage("The maximum number of items for this property is 36.");
+                                            sender.sendMessage(ChatColor.RED + "The maximum number of items for this property is 36.");
 
                                             return false;
                                         } else if (keyToSet.equals("armor-items") && items.size() > 4) {
-                                            sender.sendMessage("The maximum number of items for this property is 4.");
+                                            sender.sendMessage(ChatColor.RED + "The maximum number of items for this property is 4.");
 
                                             return false;
                                         }
@@ -243,5 +245,12 @@ public class MapCommandExecutor implements CommandExecutor {
 
         return false;
     }
-    
+
+    private void unloadAllKeepWorld(World keepWorld) {
+        Server server = Bukkit.getServer();
+        for (World unloadWorld : server.getWorlds()) {
+            if (!unloadWorld.equals(keepWorld))
+                server.unloadWorld(unloadWorld, true);
+        }
+    }
 }
