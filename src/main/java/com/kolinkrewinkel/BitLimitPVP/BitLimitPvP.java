@@ -10,6 +10,9 @@ public class BitLimitPvP extends JavaPlugin {
         new BitLimitPvPListener(this);
 
         this.getCommand("map").setExecutor(new MapCommandExecutor(this));
+        this.getCommand("match").setExecutor(new MatchCommandExecutor(this));
+        this.getCommand("team").setExecutor(new TeamCommandExecutor(this));
+        this.getCommand("stats").setExecutor(new StatsCommandExecutor(this));
     }
     
     /*
@@ -20,6 +23,10 @@ public class BitLimitPvP extends JavaPlugin {
         // save the configuration file, if there are no values, write the defaults.
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
+    }
+
+    public void broadcaseMessage(String message) {
+        getServer().broadcaseMessage(message);
     }
 }
 

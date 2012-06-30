@@ -2,23 +2,22 @@ main: com.kolinkrewinkel.BitLimitPvP.BitLimitPvP
 name: BitLimit PvP
 version: 0.2.0
 author: Kolin Krewinkel
-description: BitLimit PVP Plugin
+description: BitLimit PvP - Map, team, match, and statistics manager for Minecraft PvP.
 website: http://github.com/kolinkrewinkel/BitLimitPvP/
-softdepend: [WorldGuard]
 commands:
-  map:
-    description: WIP - Controls Maps used by BitLimit PvP
-  team:
-    description: WIP - Team info used by BitLimit PvP
-  match:
-    description: WIP - Match info used by BitLimit PvP
-  admin:
-    description: WIP - Admin commands used by BitLimit PvP
+    map:
+        description: WIP - Map management
+    team:
+        description: WIP - Manages team members
+    match:
+        description: WIP - Match info
+    stats:
+        description: WIP - Statistics
 
 permissions:
-  bitlimit.*:
-    description: gives all permissions of BitLimit PvP
-    default: op
-    children:
-      bitlimit.message:
-        description: gives permission to set the sample message using the sample command
+    bitlimit.*:
+        description: gives all permissions of BitLimit PvP
+        default: op
+        children:
+            bitlimit.stats:
+                description: gives permission to retrieve stats

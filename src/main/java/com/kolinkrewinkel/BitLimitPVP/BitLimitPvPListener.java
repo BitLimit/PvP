@@ -3,6 +3,7 @@ package com.kolinkrewinkel.BitLimitPvP;
 import java.text.MessageFormat;
 import java.util.*;
 
+import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
@@ -33,11 +34,19 @@ public class BitLimitPvPListener implements Listener {
         Player player = event.getPlayer();
 
         // Get active world
-        String activeMapName = getConfig().get("active-map");
+        String activeMapName = plugin.getConfig().getString("active-map");
+        if (activeMapName == null) {
+            activeMapName = "pvp";
+        }
         World activeWorld = Bukkit.getServer().getWorld(activeMapName);
 
         // Teleport player there.
         player.teleport(activeWorld.getSpawnLocation());
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        
     }
 }
 
