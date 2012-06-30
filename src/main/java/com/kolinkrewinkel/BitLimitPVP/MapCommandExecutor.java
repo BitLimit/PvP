@@ -25,10 +25,11 @@ public class MapCommandExecutor implements CommandExecutor {
         if (sender.hasPermission("BitLimitPvP")) {
             // Passed no arguments, return possible arguments
             if (args.length == 0) {
-                String[] messages = new String[3];
+                String[] messages = new String[4];
                 messages[0] = ChatColor.GOLD + "/map usage";
                 messages[1] = "/map define [world name]" + ChatColor.GRAY + " • Creates a new map definition based on provided world name (inherits name).";
                 messages[2] = "/map load [map/world name]" + ChatColor.GRAY + " • Loads provided map if it's defined and teleports connected players to it.";
+                messages[3] = "/map flag [map name] key [optional replacement value]" + ChatColor.GRAY + " • Gets or sets a flag for a map.";
                 sender.sendMessage(messages);
                 return true;
             }
@@ -82,10 +83,12 @@ public class MapCommandExecutor implements CommandExecutor {
                 
                 WorldCreator creator = new WorldCreator(worldName);
                 World nextWorld = Bukkit.getServer().createWorld(creator);
+                
                 if (nextWorld != null) {
                     teleportPlayersToWorld(Bukkit.getServer().getOnlinePlayers(), nextWorld);
 
                     unloadAllKeepWorld(nextWorld);
+                    saveActiveMapToConfig(worldName);
                 } else {
                     sender.sendMessage(ChatColor.RED + "The world configured for this map could not be found.");
                 }
@@ -252,5 +255,9 @@ public class MapCommandExecutor implements CommandExecutor {
             if (!unloadWorld.equals(keepWorld))
                 server.unloadWorld(unloadWorld, true);
         }
+    }
+
+    private void saveActiveMapToConfig(String map) {
+        plugin.getConfig().set("active-map", map);
     }
 }

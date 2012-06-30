@@ -28,8 +28,16 @@ public class BitLimitPvPListener implements Listener {
     }
 
     @EventHandler
-    public void onWorldLoad(WorldLoadEvent event) {
-        
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        // Get player and move them to the active world.
+        Player player = event.getPlayer();
+
+        // Get active world
+        String activeMapName = getConfig().get("active-map");
+        World activeWorld = Bukkit.getServer().getWorld(activeMapName);
+
+        // Teleport player there.
+        player.teleport(activeWorld.getSpawnLocation());
     }
 }
 
