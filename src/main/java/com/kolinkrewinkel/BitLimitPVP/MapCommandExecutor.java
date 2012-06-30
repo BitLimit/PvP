@@ -88,8 +88,9 @@ public class MapCommandExecutor implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "The world configured for this map could not be found.");
                 }
             } else if (args[0].equals("flag")) {
+                // Load config object from disk
                 FileConfiguration configuration = plugin.getConfig();
-                
+
                 if (args.length < 2) {
                     sender.sendMessage(ChatColor.RED + "A map name must be specified.");
                     return false;
@@ -127,19 +128,40 @@ public class MapCommandExecutor implements CommandExecutor {
                     String keyToSet = args[2];
                     String replacementValue = args[3];
 
-                    List potentialValues = new ArrayList() {{ add("world"); add("respawn-items"); }};
+                    List potentialValues = new ArrayList() {{ add("world"); add("respawn-items"); add("armor-items"); }};
                     
 
                     if (potentialValues.contains(keyToSet)) {
                         if (datatypeMatchesKey(keyToSet, replacementValue)) {
                             if (keyToSet.equals("respawn-items") || keyToSet.equals("armor-items")) {
+
+                                if (!args[3].equals("set")) {
+                                    sender.sendMessage(ChatColor.RED + "This property can only be read or set by standing on a chest and appending set to the normal getter.");
+
+                                    return false;
+                                }
+
                                 if (sender instanceof Player) {
                                     Player player = (Player)sender;
-                                    Block block = player.getLocation().subtract(0,1,0).getBlock();
+                                    Block block = player.getLocation().subtract(0, 1, 0).getBlock();
                                     if (block.getType() == Material.CHEST) {
-                                        Chest chest = (Chest)block;
-                                        configuration.set("maps." + mapName + "." + keyToSet, chest.getInventory().getContents());
+                                        Chest chest = (Chest)block.getState();
 
+                                        ItemStack[] contents = chest.getInventory().getContents();
+                                        ArrayList items = new ArrayList<ItemStack>(Arrays.asList(contents));
+                                        items.removeAll(Collections.singleton(null));
+
+                                        if (keyToSet.equals("respawn-items") && items.size() > 36) {
+                                            sender.sendMessage("The maximum number of items for this property is 36.");
+
+                                            return false;
+                                        } else if (keyToSet.equals("armor-items") && items.size() > 4) {
+                                            sender.sendMessage("The maximum number of items for this property is 4.");
+
+                                            return false;
+                                        }
+
+                                        configuration.set("maps." + mapName + "." + keyToSet, items.toArray());
                                     } else {
                                         sender.sendMessage(ChatColor.RED + "A chest is required to set items.");
                                         return false;
@@ -215,7 +237,7 @@ public class MapCommandExecutor implements CommandExecutor {
             else
                 return false;
 
-        } else if (key.equals("respawn-items")) {
+        } else if (key.equals("respawn-items") || key.equals("armor-items")) {
             return true;
         }
 
