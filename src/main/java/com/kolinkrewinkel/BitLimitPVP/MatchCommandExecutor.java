@@ -28,16 +28,24 @@ public class MatchCommandExecutor implements CommandExecutor {
 
             // Start and stop commands
             if (args[0].equals("start")) {
-                plugin.broadcastMessage(ChatColor.GOLD + "Match starting in 10 seconds...");
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(myPlugin, new Runnable() {
+                plugin.getServer().broadcastMessage(ChatColor.GOLD + "Match starting in ten seconds...");
+                
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     public void run() {
-                        plugin.broadcastMessage(ChatColor.CYAN + "The match has started!");
+                        plugin.getServer().broadcastMessage(ChatColor.AQUA + "Match starting in five seconds...");
+                    }
+                }, 100L);
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    public void run() {
+                        plugin.getServer().broadcastMessage(ChatColor.GREEN + "The match has started!");
                     }
                 }, 200L);
-            } else if (args[0].equals("stop")) {
 
+            } else if (args[0].equals("stop")) {
+            
             }
         }
+        
+        return false;
     }
-    return false;
 }

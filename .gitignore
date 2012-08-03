@@ -1,4 +1,8 @@
 *.class
+BukkitServer/*
+Server/*
+target/*
+.DS_Store
 
 # Package Files #
 *.jar

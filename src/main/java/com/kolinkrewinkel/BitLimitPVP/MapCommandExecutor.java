@@ -133,7 +133,7 @@ public class MapCommandExecutor implements CommandExecutor {
                     String keyToSet = args[2];
                     String replacementValue = args[3];
 
-                    List potentialValues = new ArrayList() {{ add("world"); add("respawn-items"); add("armor-items"); }};
+                    List potentialValues = new ArrayList() {{ add("world"); add("respawn-items"); add("armor-items"); add("team-mode"); add("defined-teams"); }};
                     
 
                     if (potentialValues.contains(keyToSet)) {
@@ -176,9 +176,23 @@ public class MapCommandExecutor implements CommandExecutor {
                                     sender.sendMessage(ChatColor.RED + "A player is required to set this command.");
                                     return false;
                                 }
-                            } else {
+                            
                                 configuration.set("maps." + mapName + "." + keyToSet, replacementValue);
+                            } else if (keyToSet.equals("team-mode")) {
+                                configuration.set("maps." + mapName + "." + keyToSet, replacementValue);
+                            } else if (keyToSet.equals("defined-teams")) {
+                                List teams = new ArrayList();
+                                int index = 0;
+                                for (String s : args) {
+                                    if (index > 2){
+                                        teams.add(s);
+                                    }
+                                    index++;
+                                }
+                                
+                                configuration.set("maps." + mapName + "." + keyToSet, teams);
                             }
+                            
                             plugin.saveConfig();
                             sender.sendMessage(ChatColor.GREEN + "Configuration updated.");
                         } else {
@@ -242,7 +256,7 @@ public class MapCommandExecutor implements CommandExecutor {
             else
                 return false;
 
-        } else if (key.equals("respawn-items") || key.equals("armor-items")) {
+        } else if (key.equals("respawn-items") || key.equals("armor-items") || key.equals("team-mode") || key.equals("defined-teams")) {
             return true;
         }
 

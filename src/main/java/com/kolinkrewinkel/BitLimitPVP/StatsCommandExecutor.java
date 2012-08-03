@@ -21,5 +21,6 @@ public class StatsCommandExecutor implements CommandExecutor {
         // Permissioned admins
         if (sender.hasPermission("BitLimitPvP")) {
         }
+        return false;
     }
 }
