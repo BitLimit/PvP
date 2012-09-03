@@ -46,7 +46,18 @@ public class BitLimitPvPListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        
+        if (!event.isBedSpawn()) {
+                // Get active world
+            String activeMapName = plugin.getConfig().getString("active-map");
+            if (activeMapName == null) {
+                activeMapName = "pvp";
+            }
+            World activeWorld = Bukkit.getServer().getWorld(activeMapName);
+
+            // Teleport player there.
+            event.setRespawnLocation(world.getSpawnLocation());
+
+        }
     }
 }
 

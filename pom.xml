@@ -7,7 +7,7 @@
 
   <groupId>com.kolinkrewinkel.BitLimitPvP</groupId>
   <artifactId>BitLimitPvP</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
   <name>BitLimitPvP</name>
   <description>PvP Manager for Coestar's BitLimit servers.'</description>
 
