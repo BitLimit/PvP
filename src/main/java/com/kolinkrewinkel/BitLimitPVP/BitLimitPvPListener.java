@@ -52,7 +52,7 @@ public class BitLimitPvPListener implements Listener {
             if (activeMapName == null) {
                 activeMapName = "pvp";
             }
-            World activeWorld = event.getPlayer().getWorld(activeMapName);
+            World activeWorld = event.getPlayer().getServer().getWorld(activeMapName);
 
             // Teleport player there.
             event.setRespawnLocation(activeWorld.getSpawnLocation());
