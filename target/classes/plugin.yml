@@ -1,6 +1,6 @@
 main: com.kolinkrewinkel.BitLimitPvP.BitLimitPvP
 name: BitLimit PvP
-version: 0.2.0
+version: 0.2.1
 author: Kolin Krewinkel
 description: BitLimit PvP - Map, team, match, and statistics manager for Minecraft PvP.
 website: http://github.com/kolinkrewinkel/BitLimitPvP/
