@@ -40,8 +40,10 @@ public class BitLimitPvPListener implements Listener {
         }
         World activeWorld = Bukkit.getServer().getWorld(activeMapName);
 
-        // Teleport player there.
-        player.teleport(activeWorld.getSpawnLocation());
+        if (player.getWorld() != activeWorld) {
+            // Teleport player there.
+            player.teleport(activeWorld.getSpawnLocation());
+        }
     }
 
     @EventHandler
