@@ -96,6 +96,7 @@ public class MapCommandExecutor implements CommandExecutor {
                 previousRun++;
 
                 plugin.getConfig().set("maps." + args[1] + ".run", previousRun);
+                saveActiveMapToConfig(worldName + "-" + previousRun);
                 plugin.saveConfig();
 
                 copyFolder(new File("./" + worldName), new File("./" + worldName + "-" + previousRun));
