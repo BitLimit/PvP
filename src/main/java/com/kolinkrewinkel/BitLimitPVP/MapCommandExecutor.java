@@ -13,6 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.block.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.logging.Logger;
+
 public class MapCommandExecutor implements CommandExecutor {
     private final BitLimitPvP plugin;
     
@@ -69,6 +77,8 @@ public class MapCommandExecutor implements CommandExecutor {
                 
                 // Save it in config
                 plugin.getConfig().set("maps." + worldName + ".world", worldName);
+                plugin.getConfig().set("maps." + worldName + ".run", 0);
+
                 plugin.saveConfig();
                 
                 return true;
@@ -80,8 +90,17 @@ public class MapCommandExecutor implements CommandExecutor {
                 
                 // Get the world name and load it from disk
                 String worldName = plugin.getConfig().getString("maps." + args[1] + ".world");
-                
-                WorldCreator creator = new WorldCreator(worldName);
+
+                int previousRun = plugin.getConfig().getInt("maps." + args[1] + ".run");
+
+                previousRun++;
+
+                plugin.getConfig().set("maps." + args[1] + ".run", previousRun);
+                plugin.saveConfig();
+
+                copyFolder(new File("./" + worldName), new File("./" + worldName + "-" + previousRun));
+
+                WorldCreator creator = new WorldCreator(worldName + "-" + previousRun);
                 World nextWorld = Bukkit.getServer().createWorld(creator);
                 
                 if (nextWorld != null) {
@@ -213,6 +232,54 @@ public class MapCommandExecutor implements CommandExecutor {
         
         return false;
     }
+
+    private void copyFolder(File src, File dest) {
+        if (src.isDirectory()) {
+             
+            // If directory not exists, create it
+            if (!dest.exists()) {
+                dest.mkdir();
+            }
+             
+            // List all the directory contents
+            String files[] = src.list();
+             
+            for (String file : files) {
+                // Construct the src and dest file structure
+                File srcFile = new File(src, file);
+                File destFile = new File(dest, file);
+                // Recursive copy
+                copyFolder(srcFile,destFile);
+            }
+             
+        } else {
+            // If file, then copy it
+            // Use bytes stream to support all file types
+            if (src.getName().equals("uid.dat"))
+                return;
+
+            try {
+                InputStream in = new FileInputStream(src);
+                OutputStream out = new FileOutputStream(dest);
+
+                 
+                byte[] buffer = new byte[1024];
+                 
+                int length;
+                // Copy the file content in bytes
+                while ((length = in.read(buffer)) > 0){
+                out.write(buffer, 0, length);
+                }
+                 
+                in.close();
+                out.close();
+            } catch (Exception e) {
+
+            } finally {
+
+            }
+        }
+    }
     
     private World createMapDefinitionWithWorldName(String worldName) {
         WorldCreator creator = new WorldCreator(worldName);
@@ -248,6 +315,7 @@ public class MapCommandExecutor implements CommandExecutor {
             player.teleport(spawnPoint);
         }
     }
+    
 
     private boolean datatypeMatchesKey(String key, Object dataType) {
         if (key.equals("world")) {
@@ -269,6 +337,7 @@ public class MapCommandExecutor implements CommandExecutor {
             if (!unloadWorld.equals(keepWorld))
                 server.unloadWorld(unloadWorld, true);
         }
+        Bukkit.getServer().broadcastMessage(server.getWorlds().toString());
     }
 
     private void saveActiveMapToConfig(String map) {

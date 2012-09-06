@@ -11,7 +11,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.potion.*;
 import org.bukkit.event.world.*;
 
-
 public class BitLimitPvPListener implements Listener {
     private final BitLimitPvP plugin; // Reference main plugin
     

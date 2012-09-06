@@ -16,8 +16,6 @@ public class BitLimitPvP extends JavaPlugin {
         this.getCommand("match").setExecutor(new MatchCommandExecutor(this));
         this.getCommand("team").setExecutor(new TeamCommandExecutor(this));
         this.getCommand("stats").setExecutor(new StatsCommandExecutor(this));
-
-
     }
 
     @Override
