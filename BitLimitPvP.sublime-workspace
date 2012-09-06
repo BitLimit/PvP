@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"active",
+				"activeWorld"
+			],
+			[
 				"pass",
 				"passport"
 			],
@@ -119,15 +123,18 @@
 			"file": "src/main/java/com/kolinkrewinkel/BitLimitPVP/BitLimitPvPListener.java",
 			"settings":
 			{
-				"buffer_size": 1940,
+				"buffer_size": 2023,
 				"line_ending": "Unix"
 			}
 		},
 		{
+			"contents": "package com.kolinkrewinkel.BitLimitPvP;\n\nimport java.util.*;\nimport java.util.logging.Level;\nimport com.google.common.base.Joiner;\n\nimport org.bukkit.*;\nimport org.bukkit.plugin.Plugin;\nimport org.bukkit.command.*;\nimport org.bukkit.configuration.*;\nimport org.bukkit.configuration.file.FileConfiguration;\nimport org.bukkit.entity.Player;\nimport org.bukkit.inventory.*;\nimport org.bukkit.block.*;\n\npublic class MapCommandExecutor implements CommandExecutor {\n    private final BitLimitPvP plugin;\n    \n    public MapCommandExecutor(BitLimitPvP plugin) {\n        this.plugin = plugin;\n    }\n    \n    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {\n        // Permissioned admins\n        if (sender.hasPermission(\"BitLimitPvP\")) {\n            // Passed no arguments, return possible arguments\n            if (args.length == 0) {\n                String[] messages = new String[4];\n                messages[0] = ChatColor.GOLD + \"/map usage\";\n                messages[1] = \"/map define [world name]\" + ChatColor.GRAY + \" • Creates a new map definition based on provided world name (inherits name).\";\n                messages[2] = \"/map load [map/world name]\" + ChatColor.GRAY + \" • Loads provided map if it's defined and teleports connected players to it.\";\n                messages[3] = \"/map flag [map name] key [optional replacement value]\" + ChatColor.GRAY + \" • Gets or sets a flag for a map.\";\n                sender.sendMessage(messages);\n                return true;\n            }\n            \n            // Define a map\n            if (args[0].equals(\"define\")) {\n                // Check if world name was supplied.\n                if (args.length == 1) {\n                    sender.sendMessage(ChatColor.RED + \"Supply a world name.\");\n                    return false;\n                }\n                \n                // Quick reference to argument after define (name.)\n                String worldName = args[1];\n                \n                // Return if map is already defined in config.\n                if (mapExistsWithNameNotifySender(worldName, sender))\n                    return false;\n                \n                // Check for existing loaded world with name.\n                World newWorld = Bukkit.getServer().getWorld(worldName);\n                \n                // No world already exists with this name, create it for them.\n                if (newWorld == null) {\n                    newWorld = createMapDefinitionWithWorldName(worldName);\n                    \n                    // World still could not be created for some reason, fail.\n                    if (newWorld == null) {\n                        newWorld = Bukkit.getServer().getWorld(worldName);\n                        sender.sendMessage(ChatColor.RED + \"No world by this name could be found nor created.\");\n                        return false;\n                    }\n                }\n                \n                // World was loaded successfully: notify.\n                sender.sendMessage(ChatColor.GREEN + \"World successfully loaded with name \" + ChatColor.WHITE + worldName + ChatColor.GREEN + \".\");\n                \n                // Save it in config\n                plugin.getConfig().set(\"maps.\" + worldName + \".world\", worldName);\n                plugin.saveConfig();\n                \n                return true;\n            } else if (args[0].equals(\"load\")) {\n                if (args.length == 1) {\n                    sender.sendMessage(ChatColor.RED + \"Supply a map name.\");\n                    return false;\n                }\n                \n                // Get the world name and load it from disk\n                String worldName = plugin.getConfig().getString(\"maps.\" + args[1] + \".world\");\n                \n                WorldCreator creator = new WorldCreator(worldName);\n                World nextWorld = Bukkit.getServer().createWorld(creator);\n                \n                if (nextWorld != null) {\n                    teleportPlayersToWorld(Bukkit.getServer().getOnlinePlayers(), nextWorld);\n\n                    unloadAllKeepWorld(nextWorld);\n                    saveActiveMapToConfig(worldName);\n                } else {\n                    sender.sendMessage(ChatColor.RED + \"The world configured for this map could not be found.\");\n                }\n            } else if (args[0].equals(\"flag\")) {\n                // Load config object from disk\n                FileConfiguration configuration = plugin.getConfig();\n\n                if (args.length < 2) {\n                    sender.sendMessage(ChatColor.RED + \"A map name must be specified.\");\n                    return false;\n                } else if (args.length == 2) {\n                    String mapName = args[1];\n                    \n                    ConfigurationSection section = configuration.getConfigurationSection(\"maps.\" + mapName);\n                    if (section != null) {\n                        Map <String, Object> values = section.getValues(true);\n                        \n                        if (values != null) {\n                            for (Map.Entry<String, Object> entry : values.entrySet()) {\n                                sender.sendMessage(ChatColor.GOLD + entry.getKey() + \": \" + ChatColor.WHITE + entry.getValue().toString());\n                            }\n                        }\n                    } else {\n                        sender.sendMessage(ChatColor.RED + \"Map with specified name could not be found.\");\n                    }\n                    \n                } else if (args.length == 3) {\n                    \n                    String mapName = args[1];\n                    String requestedKey = args[2];\n                    \n                    Object returnValue = configuration.get(\"maps.\" + mapName + \".\" + requestedKey);\n                    \n                    if (returnValue == null) {\n                        sender.sendMessage(ChatColor.RED + \"Requested flag not found.\");\n                    } else {\n                        sender.sendMessage(ChatColor.WHITE + returnValue.toString());\n                    }\n\n                } else if (args.length >= 4) {\n                    String mapName = args[1];\n                    String keyToSet = args[2];\n                    String replacementValue = args[3];\n\n                    List potentialValues = new ArrayList() {{ add(\"world\"); add(\"respawn-items\"); add(\"armor-items\"); add(\"team-mode\"); add(\"defined-teams\"); }};\n                    \n\n                    if (potentialValues.contains(keyToSet)) {\n                        if (datatypeMatchesKey(keyToSet, replacementValue)) {\n                            if (keyToSet.equals(\"respawn-items\") || keyToSet.equals(\"armor-items\")) {\n\n                                if (!args[3].equals(\"set\")) {\n                                    sender.sendMessage(ChatColor.RED + \"This property can only be read or set by standing on a chest and appending set to the normal getter.\");\n\n                                    return false;\n                                }\n\n                                if (sender instanceof Player) {\n                                    Player player = (Player)sender;\n                                    Block block = player.getLocation().subtract(0, 1, 0).getBlock();\n                                    if (block.getType() == Material.CHEST) {\n                                        Chest chest = (Chest)block.getState();\n\n                                        ItemStack[] contents = chest.getInventory().getContents();\n                                        ArrayList items = new ArrayList<ItemStack>(Arrays.asList(contents));\n                                        items.removeAll(Collections.singleton(null));\n\n                                        if (keyToSet.equals(\"respawn-items\") && items.size() > 36) {\n                                            sender.sendMessage(ChatColor.RED + \"The maximum number of items for this property is 36.\");\n\n                                            return false;\n                                        } else if (keyToSet.equals(\"armor-items\") && items.size() > 4) {\n                                            sender.sendMessage(ChatColor.RED + \"The maximum number of items for this property is 4.\");\n\n                                            return false;\n                                        }\n\n                                        configuration.set(\"maps.\" + mapName + \".\" + keyToSet, items.toArray());\n                                    } else {\n                                        sender.sendMessage(ChatColor.RED + \"A chest is required to set items.\");\n                                        return false;\n                                    }\n\n                                } else {\n                                    sender.sendMessage(ChatColor.RED + \"A player is required to set this command.\");\n                                    return false;\n                                }\n                            \n                                configuration.set(\"maps.\" + mapName + \".\" + keyToSet, replacementValue);\n                            } else if (keyToSet.equals(\"team-mode\")) {\n                                configuration.set(\"maps.\" + mapName + \".\" + keyToSet, replacementValue);\n                            } else if (keyToSet.equals(\"defined-teams\")) {\n                                List teams = new ArrayList();\n                                int index = 0;\n                                for (String s : args) {\n                                    if (index > 2){\n                                        teams.add(s);\n                                    }\n                                    index++;\n                                }\n                                \n                                configuration.set(\"maps.\" + mapName + \".\" + keyToSet, teams);\n                            }\n                            \n                            plugin.saveConfig();\n                            sender.sendMessage(ChatColor.GREEN + \"Configuration updated.\");\n                        } else {\n                            sender.sendMessage(ChatColor.RED + \"Invalid datatype.\");\n                        }\n                    } else {\n                        sender.sendMessage(ChatColor.DARK_RED + \"Invalid key.  These keys are valid: \" + ChatColor.RED + \"world (do not edit without changing map name manually in config), respawn-items\");\n                    }\n\n                    \n\n                }\n                    return true;                \n            }\n            \n            return true;\n        } \n        \n        return false;\n    }\n    \n    private World createMapDefinitionWithWorldName(String worldName) {\n        WorldCreator creator = new WorldCreator(worldName);\n        creator.generateStructures(false);\n        creator.type(WorldType.FLAT);\n        \n        long seed = 911002014; // Porsche reference.  Because it's always necessary to include a Porsche reference.\n        creator.seed(seed);\n        \n        // Create the world with specified attributes\n        World resultWorld = Bukkit.getServer().createWorld(creator);\n        \n        return resultWorld;\n    }\n    \n    private boolean mapExistsWithNameNotifySender(String worldName, CommandSender sender) {\n        String existingWorldCheck = plugin.getConfig().getString(\"maps.\" + worldName + \".world\");\n        \n        if (existingWorldCheck != null) {\n            sender.sendMessage(ChatColor.RED + \"Map with provided name already exists.\");\n            \n            return true;\n        }\n        \n        return false;\n    }\n    \n    private void teleportPlayersToWorld(Player[] players, World world) {\n        // Location of next world's spawn\n        Location spawnPoint = world.getSpawnLocation();\n        for (Player player : players) {\n            // Move all players to new map\n            player.teleport(spawnPoint);\n        }\n    }\n    \n\n    private boolean datatypeMatchesKey(String key, Object dataType) {\n        if (key.equals(\"world\")) {\n            if (dataType instanceof String)\n                return true;\n            else\n                return false;\n\n        } else if (key.equals(\"respawn-items\") || key.equals(\"armor-items\") || key.equals(\"team-mode\") || key.equals(\"defined-teams\")) {\n            return true;\n        }\n\n        return false;\n    }\n\n    private void unloadAllKeepWorld(World keepWorld) {\n        Server server = Bukkit.getServer();\n        for (World unloadWorld : server.getWorlds()) {\n            if (!unloadWorld.equals(keepWorld))\n                server.unloadWorld(unloadWorld, true);\n        }\n    }\n\n    private void saveActiveMapToConfig(String map) {\n        plugin.getConfig().set(\"active-map\", map);\n    }\n}\n",
 			"file": "src/main/java/com/kolinkrewinkel/BitLimitPVP/MapCommandExecutor.java",
+			"file_size": 12795,
+			"file_write_time": 1346642042000000,
 			"settings":
 			{
-				"buffer_size": 12789,
+				"buffer_size": 12794,
 				"line_ending": "Unix"
 			}
 		},
@@ -152,6 +159,14 @@
 			"settings":
 			{
 				"buffer_size": 1253,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pom.xml",
+			"settings":
+			{
+				"buffer_size": 2505,
 				"line_ending": "Unix"
 			}
 		}
@@ -226,6 +241,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"onCommand",
 			"sendError",
 			"app.listen",
 			"-",
@@ -294,7 +310,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -330,15 +346,15 @@
 					"file": "src/main/java/com/kolinkrewinkel/BitLimitPVP/BitLimitPvPListener.java",
 					"settings":
 					{
-						"buffer_size": 1940,
+						"buffer_size": 2023,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1919,
-								1919
+								1477,
+								1477
 							]
 						],
 						"settings":
@@ -358,15 +374,15 @@
 					"file": "src/main/java/com/kolinkrewinkel/BitLimitPVP/MapCommandExecutor.java",
 					"settings":
 					{
-						"buffer_size": 12789,
+						"buffer_size": 12794,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								11973,
-								11973
+								553,
+								553
 							]
 						],
 						"settings":
@@ -376,7 +392,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2218.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -457,6 +473,34 @@
 						{
 							"syntax": "Packages/Java/Java.tmLanguage",
 							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "pom.xml",
+					"settings":
+					{
+						"buffer_size": 2505,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								395,
+								395
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
