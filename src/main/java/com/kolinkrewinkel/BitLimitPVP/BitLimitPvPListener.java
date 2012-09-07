@@ -34,10 +34,12 @@ public class BitLimitPvPListener implements Listener {
 
         // Get active world
         String activeMapName = plugin.getConfig().getString("active-map");
-        if (activeMapName == null) {
-            activeMapName = "pvp";
+        String currentWorld = activeMapName + "-" + plugin.getConfig().getInt("maps." + activeMapName + ".run");
+
+        if (currentWorld == null) {
+            currentWorld = "pvp";
         }
-        World activeWorld = Bukkit.getServer().getWorld(activeMapName);
+        World activeWorld = Bukkit.getServer().getWorld(currentWorld);
 
         if (player.getWorld() != activeWorld) {
             // Teleport player there.
